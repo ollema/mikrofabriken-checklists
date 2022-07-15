@@ -2,7 +2,7 @@
 	import { Route } from 'tinro';
 
 	import BaseNav from './lib/Nav.svelte';
-	import Machine from './lib/machines/Index.svelte';
+	import MachinePage from './lib/machines/Index.svelte';
 
 	import { machines } from './data/machines';
 </script>
@@ -16,6 +16,6 @@
 	</div>
 </Route>
 
-<Route path="/machines/:slug" let:meta>
-	<Machine currentMachine={machines[meta.params.slug]} />
+<Route path="/machines/:slug/*" let:meta>
+	<MachinePage currentMachine={machines[meta.params.slug]} />
 </Route>
