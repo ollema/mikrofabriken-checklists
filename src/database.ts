@@ -1,5 +1,5 @@
 import Database from 'tauri-plugin-sql-api';
-import type { UserType } from '../models/user';
+import type { UserType } from './models/user';
 
 let db: null | Database = null;
 
