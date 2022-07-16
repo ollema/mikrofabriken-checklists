@@ -21,7 +21,7 @@
 			</h1>
 		</div>
 		<div class="flex flex-col items-center mt-8 space-y-2">
-			{#each currentMachine.setupSteps as setupStep, i}
+			{#each Object.values(currentMachine.setupSteps) as setupStep, i}
 				<SetupStep {setupStep} {i} />
 			{/each}
 		</div>

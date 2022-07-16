@@ -12,11 +12,11 @@
 <div class="default-width-padding mt-8">
 	<div class="flex justify-center">
 		<h1 class="font-medium text-xl">
-			setup step: <strong>{currentMachine.setupSteps[currentStep].title.toLowerCase()}</strong>
+			setup step: <strong>{Object.values(currentMachine.setupSteps)[currentStep].title.toLowerCase()}</strong>
 		</h1>
 	</div>
 	<div class="flex flex-col items-center mt-8 space-y-2">
-		{#each currentMachine.setupSteps[currentStep].setupStepTasks as setupStepTask, i}
+		{#each Object.values(Object.values(currentMachine.setupSteps)[currentStep].setupStepTasks) as setupStepTask, i}
 			<SetupStepTask {setupStepTask} {i} />
 		{/each}
 	</div>

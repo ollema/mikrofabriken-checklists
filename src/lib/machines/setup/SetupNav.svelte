@@ -18,7 +18,7 @@
 					{currentMachine.title.toLowerCase()} setup
 				</div>
 
-				{#if currentStep < currentMachine.setupSteps.length - 1}
+				{#if currentStep < Object.values(currentMachine.setupSteps).length - 1}
 					<div class="flex-grow basis-0 flex justify-end">
 						<a class="text-white justify-center" href="/machines/{currentMachine.slug}/setup/step/{currentStep + 1}"
 							>skip this step</a
@@ -54,14 +54,14 @@
 			{#if currentStep >= 0}
 				<div class="flex-grow basis-0 flex items-center justify-center">
 					<div>progress:&nbsp;</div>
-					{#each currentMachine.setupSteps as step, i}
+					{#each Object.values(currentMachine.setupSteps) as step, i}
 						<div class="px-[0.15rem]">
 							<a class="text-gray-500" class:text-green-500={step} href="/machines/{currentMachine.slug}/setup/step/{i}"
 								>█</a
 							>
 						</div>
 					{/each}
-					<div>&nbsp;{currentStep + 1}/{currentMachine.setupSteps.length}</div>
+					<div>&nbsp;{currentStep + 1}/{Object.values(currentMachine.setupSteps).length}</div>
 				</div>
 				<div class="flex-grow basis-0 flex justify-end">
 					<a class="text-white justify-center" href="/machines/{currentMachine.slug}/setup/reset">reset all steps</a>

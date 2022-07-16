@@ -8,7 +8,7 @@
 </script>
 
 <Route path="/">
-	<BaseNav />
+	<BaseNav {machines} />
 	<div class="default-width-padding">
 		<div class="flex justify-center">
 			<h1 class="font-medium text-xl">mikrofabriken checklists</h1>
