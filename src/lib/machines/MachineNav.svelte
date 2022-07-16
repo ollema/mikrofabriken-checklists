@@ -1,7 +1,13 @@
 <script lang="ts">
-	import type { MachineType } from '../../models/machine';
+	import type { MachineType } from 'src/models/machine';
 
-	export let currentMachine: MachineType;
+	import { machines } from './../../util/stores';
+
+	export let slug: string;
+
+	$: currentMachine = <MachineType>Object.values($machines).find((obj) => {
+		return obj.slug === slug;
+	});
 </script>
 
 <nav data-tauri-drag-region class="bg-gray-800 text-white">

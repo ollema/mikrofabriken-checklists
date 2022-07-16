@@ -6,13 +6,19 @@
 	import MachineNav from './MachineNav.svelte';
 	import MachineButton from './MachineButton.svelte';
 
-	import type { MachineType } from '../../models/machine';
+	import type { MachineType } from 'src/models/machine';
 
-	export let currentMachine: MachineType;
+	import { machines } from './../../util/stores';
+
+	export let slug: string;
+
+	$: currentMachine = <MachineType>Object.values($machines).find((obj) => {
+		return obj.slug === slug;
+	});
 </script>
 
 <Route path="/">
-	<MachineNav {currentMachine} />
+	<MachineNav {slug} />
 
 	<div class="default-width-padding mt-16">
 		<div class="flex justify-center">
@@ -22,18 +28,18 @@
 		</div>
 		<div class="flex justify-center mt-8 space-x-8">
 			<div>
-				<MachineButton {currentMachine} action="setup" />
+				<MachineButton {slug} action="setup" />
 			</div>
 			<div>
-				<MachineButton {currentMachine} action="operate" />
+				<MachineButton {slug} action="operate" />
 			</div>
 			<div>
-				<MachineButton {currentMachine} action="cleanup" />
+				<MachineButton {slug} action="cleanup" />
 			</div>
 		</div>
 	</div>
 </Route>
 
 <Route path="/setup/*">
-	<SetupPage {currentMachine} />
+	<SetupPage {slug} />
 </Route>

@@ -6,13 +6,19 @@
 	import SetupNav from './SetupNav.svelte';
 	import SetupStep from './SetupStepCard.svelte';
 
-	import type { MachineType } from '../../../models/machine';
+	import type { MachineType } from 'src/models/machine';
 
-	export let currentMachine: MachineType;
+	import { machines } from './../../../util/stores';
+
+	export let slug: string;
+
+	$: currentMachine = <MachineType>Object.values($machines).find((obj) => {
+		return obj.slug === slug;
+	});
 </script>
 
 <Route path="/">
-	<SetupNav {currentMachine} />
+	<SetupNav {slug} />
 
 	<div class="default-width-padding mt-8">
 		<div class="flex justify-center">
@@ -34,5 +40,5 @@
 </Route>
 
 <Route path="/step/:id/*" let:meta>
-	<SetupStepPage {currentMachine} currentStep={+meta.params.id} />
+	<SetupStepPage {slug} currentStep={+meta.params.id} />
 </Route>

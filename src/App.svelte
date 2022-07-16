@@ -4,11 +4,11 @@
 	import BaseNav from './lib/BaseNav.svelte';
 	import MachinePage from './lib/machines/MachinePage.svelte';
 
-	import { machines } from './data/machines';
+	import { machines } from './util/stores';
 </script>
 
 <Route path="/">
-	<BaseNav {machines} />
+	<BaseNav />
 	<div class="default-width-padding">
 		<div class="flex justify-center">
 			<h1 class="font-medium text-xl">mikrofabriken checklists</h1>
@@ -16,6 +16,8 @@
 	</div>
 </Route>
 
-<Route path="/machines/:slug/*" let:meta>
-	<MachinePage currentMachine={machines[meta.params.slug]} />
-</Route>
+{#each $machines as machine}
+	<Route path="/machines/{machine.slug}/*">
+		<MachinePage slug={machine.slug} />
+	</Route>
+{/each}
