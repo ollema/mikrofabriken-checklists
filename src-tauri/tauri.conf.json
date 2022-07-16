@@ -59,7 +59,9 @@
         "height": 720,
         "resizable": true,
         "title": "mikrofabriken checklists",
-        "width": 1280
+        "width": 1280,
+        "decorations": false,
+        "center": true
       }
     ]
   }

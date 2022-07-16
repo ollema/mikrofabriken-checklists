@@ -6,9 +6,9 @@
 	}
 </script>
 
-<nav class="bg-gray-800 text-white mb-8">
+<nav data-tauri-drag-region class="bg-gray-800 text-white mb-8">
 	<div class="default-width-padding">
-		<div class="flex items-center justify-between h-10">
+		<div class="flex items-center justify-between h-8">
 			<div class="hidden md:block">
 				<div class="flex items-center justify-between space-x-8">
 					<div>
