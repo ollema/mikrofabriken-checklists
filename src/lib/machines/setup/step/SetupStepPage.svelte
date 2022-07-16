@@ -3,7 +3,7 @@
 	import SetupStepTask from './SetupStepTask.svelte';
 
 	import { machines } from './../../../../util/stores';
-	import { settings, setSetupStepDone } from './../../../../util/stores';
+	import { setSetupStepDone } from './../../../../util/stores';
 
 	export let slug: string;
 	export let currentStep = -1;

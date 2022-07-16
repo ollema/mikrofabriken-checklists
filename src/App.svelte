@@ -8,8 +8,11 @@
 
 	import { appWindow } from '@tauri-apps/api/window';
 
+	// eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
 	document.getElementById('titlebar-minimize')!.addEventListener('click', () => appWindow.minimize());
+	// eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
 	document.getElementById('titlebar-maximize')!.addEventListener('click', () => appWindow.toggleMaximize());
+	// eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
 	document.getElementById('titlebar-close')!.addEventListener('click', () => appWindow.close());
 </script>
 

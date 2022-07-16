@@ -1,6 +1,6 @@
 import Ajv from 'ajv';
 
-import schema from '../schemas/schema_SettingsType.json';
+import settingsSchema from '../schemas/schema_SettingsType.json';
 
 import { readTextFile, writeTextFile, createDir, BaseDirectory } from '@tauri-apps/api/fs';
 import { resolve, configDir } from '@tauri-apps/api/path';
@@ -21,16 +21,16 @@ const defaultSettings: SettingsType = {
 
 export async function loadSettings(): Promise<SettingsType> {
 	let settings: SettingsType;
-	let settingsFileExists = await exists(settingsPath);
+	const settingsFileExists = await exists(settingsPath);
 
 	if (settingsFileExists) {
-		let settingsString = await readTextFile(settingsFileName, { dir: BaseDirectory.Config });
+		const settingsString = await readTextFile(settingsFileName, { dir: BaseDirectory.Config });
 		settings = JSON.parse(settingsString);
 	} else {
 		settings = structuredClone(defaultSettings);
 	}
 
-	const valid = ajv.validate(schema, settings);
+	const valid = ajv.validate(settingsSchema, settings);
 
 	if (!valid) {
 		throw Error('settings file is not formatted correctly');

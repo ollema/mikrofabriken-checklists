@@ -22,10 +22,10 @@ export async function loadSettings(): Promise<SettingsType> {
 	await createDir(settingsDir, { dir: BaseDirectory.Config, recursive: true });
 
 	let settings: SettingsType;
-	let settingsFileExists = await exists(settingsPath);
+	const settingsFileExists = await exists(settingsPath);
 
 	if (settingsFileExists) {
-		let settingsString = await readTextFile(settingsFileName, { dir: BaseDirectory.Config });
+		const settingsString = await readTextFile(settingsFileName, { dir: BaseDirectory.Config });
 		settings = JSON.parse(settingsString);
 	} else {
 		settings = structuredClone({ machineSettings: {} });
@@ -66,7 +66,7 @@ export const createSettingsStore = async () => {
 export const settings = await createSettingsStore();
 
 export function setSetupStepDone(slug: string, id: number) {
-	let _settings = get(settings);
+	const _settings = get(settings);
 	if (Object.hasOwn(_settings.machineSettings, slug)) {
 		if (Object.hasOwn(_settings.machineSettings[slug].setupStepSettings, id)) {
 			_settings.machineSettings[slug].setupStepSettings[id].done = true;
@@ -97,15 +97,15 @@ export const defaultMachines = { laser: laser };
 
 function setMachinesStoreFromSettingsStore(settings: SettingsType): MachinesType {
 	// start with the machine data only
-	let machines = structuredClone(defaultMachines);
+	const machines = structuredClone(defaultMachines);
 
 	// for each machine
 	Object.entries(machines).forEach((machineMapping) => {
-		let [slug, machine] = machineMapping;
+		const [slug, machine] = machineMapping;
 
 		// for each setup step
 		Object.entries(machine.setupSteps).forEach((setupStepMapping) => {
-			let [id, setupStep] = setupStepMapping;
+			const [id, setupStep] = setupStepMapping;
 
 			// if there is an entry for this setup step in the settings store/file
 			if (
