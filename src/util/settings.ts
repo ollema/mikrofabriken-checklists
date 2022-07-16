@@ -6,7 +6,7 @@ import { readTextFile, writeTextFile, createDir, BaseDirectory } from '@tauri-ap
 import { resolve, configDir } from '@tauri-apps/api/path';
 import { exists } from 'tauri-plugin-fs-extra-api';
 
-import type { SettingsType, SetupStepSettingsType } from '../models/settings';
+import type { SettingsType } from '../models/settings';
 
 const configDirPath = await configDir();
 const settingsDir = 'mikrofabriken-checklists';
@@ -42,75 +42,4 @@ export async function loadSettings(): Promise<SettingsType> {
 export async function writeSettings(settings: SettingsType) {
 	await createDir(settingsDir, { dir: BaseDirectory.Config, recursive: true });
 	await writeTextFile(settingsFileName, JSON.stringify(settings), { dir: BaseDirectory.Config });
-}
-
-export async function getSetupStep(machine: string, step: number): Promise<SetupStepSettingsType> {
-	let settings = await loadSettings();
-
-	if (Object.hasOwn(settings.machineSettings, machine)) {
-		if (Object.hasOwn(settings.machineSettings[machine].setupStepSettings, step)) {
-			return settings.machineSettings[machine].setupStepSettings[step];
-		}
-	}
-
-	return { done: false, skipped: false, setupStepTaskSettings: {} };
-}
-
-export async function getSetupStepDone(machine: string, step: number): Promise<boolean> {
-	let settings = await loadSettings();
-
-	if (Object.hasOwn(settings.machineSettings, machine)) {
-		if (Object.hasOwn(settings.machineSettings[machine].setupStepSettings, step)) {
-			let done = settings.machineSettings[machine].setupStepSettings[step].done;
-			return done;
-		}
-	}
-
-	return false;
-}
-
-export async function setSetupStepDone(machine: string, step: number, done: boolean) {
-	let settings = await loadSettings();
-
-	if (Object.hasOwn(settings.machineSettings, machine)) {
-		if (Object.hasOwn(settings.machineSettings[machine].setupStepSettings, step)) {
-			settings.machineSettings[machine].setupStepSettings[step].done = done;
-		} else {
-			settings.machineSettings[machine].setupStepSettings[step] = {
-				done: done,
-				skipped: false,
-				setupStepTaskSettings: {}
-			};
-		}
-	} else {
-		settings.machineSettings[machine] = {
-			setupStepSettings: {
-				[step]: {
-					done: done,
-					skipped: false,
-					setupStepTaskSettings: {}
-				}
-			}
-		};
-	}
-
-	writeSettings(settings);
-}
-
-export async function resetSetupSteps(machine: string) {
-	let settings = await loadSettings();
-
-	if (Object.hasOwn(settings.machineSettings, machine)) {
-		for (const id in settings.machineSettings[machine].setupStepSettings) {
-			settings.machineSettings[machine].setupStepSettings[id].done = false;
-			settings.machineSettings[machine].setupStepSettings[id].skipped = false;
-			settings.machineSettings[machine].setupStepSettings[id].setupStepTaskSettings = {};
-		}
-	} else {
-		settings.machineSettings[machine] = {
-			setupStepSettings: {}
-		};
-	}
-
-	writeSettings(settings);
 }

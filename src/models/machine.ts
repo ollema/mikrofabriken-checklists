@@ -13,7 +13,7 @@ export type SetupStepType = {
 	done?: boolean;
 	skipped?: boolean;
 
-	setupStepTasks: SetupStepTaskType[];
+	setupStepTasks: { [key: number]: SetupStepTaskType };
 };
 
 export type MachineType = {
@@ -21,7 +21,7 @@ export type MachineType = {
 	title: string;
 	desc?: string;
 
-	setupSteps: SetupStepType[];
+	setupSteps: { [key: number]: SetupStepType };
 };
 
-export type MachinesType = MachineType[];
+export type MachinesType = { [key: string]: MachineType };
