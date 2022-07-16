@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { Route } from 'tinro';
 
-	import SetupStepPage from './step/Index.svelte';
+	import SetupStepPage from './step/SetupStepPage.svelte';
 
-	import Nav from './Nav.svelte';
+	import SetupNav from './SetupNav.svelte';
 	import SetupStep from './SetupStepCard.svelte';
 
 	import type { MachineType } from '../../../models/machine';
@@ -12,7 +12,7 @@
 </script>
 
 <Route path="/">
-	<Nav {currentMachine} />
+	<SetupNav {currentMachine} />
 
 	<div class="default-width-padding mt-8">
 		<div class="flex justify-center">

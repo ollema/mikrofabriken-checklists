@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Nav from '../Nav.svelte';
+	import SetupNav from '../SetupNav.svelte';
 	import type { MachineType } from '../../../../models/machine';
 	import SetupStepTask from './SetupStepTask.svelte';
 
@@ -7,7 +7,7 @@
 	export let currentStep: number;
 </script>
 
-<Nav {currentMachine} {currentStep} />
+<SetupNav {currentMachine} {currentStep} />
 
 <div class="default-width-padding mt-8">
 	<div class="flex justify-center">

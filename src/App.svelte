@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { Route } from 'tinro';
 
-	import BaseNav from './lib/Nav.svelte';
-	import MachinePage from './lib/machines/Index.svelte';
+	import BaseNav from './lib/BaseNav.svelte';
+	import MachinePage from './lib/machines/MachinePage.svelte';
 
 	import { machines } from './data/machines';
 </script>
