@@ -1,16 +1,12 @@
 <script lang="ts">
 	import { machines } from './../../../util/stores';
-	import { settings } from './../../../util/stores';
+	import { resetSetupSteps } from './../../../util/stores';
 
 	export let slug: string;
 	export let currentStep = -1;
 
 	function resetAllSteps() {
-		Object.keys($settings.machineSettings[slug].setupStepSettings).forEach((id) => {
-			$settings.machineSettings[slug].setupStepSettings[+id].done = false;
-			$settings.machineSettings[slug].setupStepSettings[+id].skipped = false;
-			$settings.machineSettings[slug].setupStepSettings[+id].setupStepTaskSettings = {};
-		});
+		resetSetupSteps(slug);
 	}
 </script>
 

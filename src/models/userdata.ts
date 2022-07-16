@@ -14,6 +14,6 @@ export type MachineSettingsType = {
 	setupStepSettings: { [key: number]: SetupStepSettingsType };
 };
 
-export type SettingsType = {
+export type UserdataType = {
 	machineSettings: { [key: string]: MachineSettingsType };
 };

@@ -1,103 +1,62 @@
-import { BaseDirectory, createDir, readTextFile, writeTextFile } from '@tauri-apps/api/fs';
-import { configDir, resolve } from '@tauri-apps/api/path';
-import { exists } from 'tauri-plugin-fs-extra-api';
-
-import Ajv from 'ajv';
-
-import { writable, derived, get, type Writable } from 'svelte/store';
+import { derived, get, writable, type Writable } from 'svelte/store';
 
 import type { MachinesType } from '../models/machine';
-import type { SettingsType } from '../models/settings';
-
-import schema from '../schemas/schema_SettingsType.json';
+import type { UserdataType } from '../models/userdata';
 
 import { laser } from './data/laser';
+import { loadUserdata, writeUserdata } from './userdata';
 
-const configDirPath = await configDir();
-const settingsDir = 'mikrofabriken-checklists';
-const settingsFileName = `${settingsDir}/settings.json`;
-const settingsPath = await resolve(configDirPath, settingsFileName);
+const _machines = { laser: laser };
 
-export async function loadSettings(): Promise<SettingsType> {
-	await createDir(settingsDir, { dir: BaseDirectory.Config, recursive: true });
+export const createUserdataStore = async () => {
+	// initialize store with user data from file if applicable
+	const { subscribe, set, update } = writable(await loadUserdata());
 
-	let settings: SettingsType;
-	const settingsFileExists = await exists(settingsPath);
-
-	if (settingsFileExists) {
-		const settingsString = await readTextFile(settingsFileName, { dir: BaseDirectory.Config });
-		settings = JSON.parse(settingsString);
-	} else {
-		settings = structuredClone({ machineSettings: {} });
-	}
-
-	const ajv = new Ajv();
-	const valid = ajv.validate(schema, settings);
-
-	if (!valid) {
-		throw Error('settings file is not formatted correctly');
-	}
-
-	return settings;
-}
-
-export async function writeSettings(settings: SettingsType) {
-	await writeTextFile(settingsFileName, JSON.stringify(settings, null, 2), { dir: BaseDirectory.Config });
-}
-
-export const createSettingsStore = async () => {
-	// load settings from file if possible or default to empty settings
-	const settings = await loadSettings();
-
-	// initialize store
-	const { subscribe, set, update } = writable(settings);
-
-	// update .set of store to also update settings file
+	// update .set of store to also update user data file
 	return {
 		subscribe,
-		set: (settings: SettingsType) => {
-			writeSettings(settings);
-			return set(settings);
+		set: (userdata: UserdataType) => {
+			writeUserdata(userdata);
+			return set(userdata);
 		},
 		update
 	};
 };
 
-export const settings = await createSettingsStore();
+export const userdata = await createUserdataStore();
 
 export function setSetupStepDone(slug: string, id: number) {
-	const _settings = get(settings);
-	if (Object.hasOwn(_settings.machineSettings, slug)) {
-		if (Object.hasOwn(_settings.machineSettings[slug].setupStepSettings, id)) {
-			_settings.machineSettings[slug].setupStepSettings[id].done = true;
-			_settings.machineSettings[slug].setupStepSettings[id].skipped = false;
+	const _userdata = get(userdata);
+	if (Object.hasOwn(_userdata.machineSettings, slug)) {
+		if (Object.hasOwn(_userdata.machineSettings[slug].setupStepSettings, id)) {
+			_userdata.machineSettings[slug].setupStepSettings[id].done = true;
+			_userdata.machineSettings[slug].setupStepSettings[id].skipped = false;
 		} else {
-			_settings.machineSettings[slug].setupStepSettings[id] = {
-				done: true,
-				skipped: false,
-				setupStepTaskSettings: {}
-			};
+			_userdata.machineSettings[slug].setupStepSettings[id] = { done: true, skipped: false, setupStepTaskSettings: {} };
 		}
 	} else {
-		_settings.machineSettings[slug] = {
+		_userdata.machineSettings[slug] = {
 			setupStepSettings: {
-				[id]: {
-					done: true,
-					skipped: false,
-					setupStepTaskSettings: {}
-				}
+				[id]: { done: true, skipped: false, setupStepTaskSettings: {} }
 			}
 		};
 	}
+	userdata.set(_userdata);
+}
 
-	settings.set(_settings);
+export function resetSetupSteps(slug: string) {
+	const _userdata = get(userdata);
+	Object.keys(_userdata.machineSettings[slug].setupStepSettings).forEach((id) => {
+		_userdata.machineSettings[slug].setupStepSettings[id] = { done: false, skipped: false, setupStepTaskSettings: {} };
+	});
+	userdata.set(_userdata);
 }
 
 export const defaultMachines = { laser: laser };
 
-function setMachinesStoreFromSettingsStore(settings: SettingsType): MachinesType {
-	// start with the machine data only
-	const machines = structuredClone(defaultMachines);
+function deriveMachinesStoreFromUserdata(userdata: UserdataType): MachinesType {
+	// start with machine data only
+	const machines = structuredClone(_machines);
 
 	// for each machine
 	Object.entries(machines).forEach((machineMapping) => {
@@ -105,21 +64,46 @@ function setMachinesStoreFromSettingsStore(settings: SettingsType): MachinesType
 
 		// for each setup step
 		Object.entries(machine.setupSteps).forEach((setupStepMapping) => {
-			const [id, setupStep] = setupStepMapping;
+			const [setupStepId, setupStep] = setupStepMapping;
 
-			// if there is an entry for this setup step in the settings store/file
+			// if there is an entry for this setup step in the userdata store
 			if (
-				Object.hasOwn(settings.machineSettings, slug) &&
-				Object.hasOwn(settings.machineSettings[slug].setupStepSettings, +id)
+				Object.hasOwn(userdata.machineSettings, slug) &&
+				Object.hasOwn(userdata.machineSettings[slug].setupStepSettings, +setupStepId)
 			) {
 				// use existing values
-				setupStep.done = settings.machineSettings[slug].setupStepSettings[+id].done;
-				setupStep.skipped = settings.machineSettings[slug].setupStepSettings[+id].skipped;
+				setupStep.done = userdata.machineSettings[slug].setupStepSettings[+setupStepId].done;
+				setupStep.skipped = userdata.machineSettings[slug].setupStepSettings[+setupStepId].skipped;
 			} else {
 				// else use defaults
 				setupStep.done = false;
 				setupStep.skipped = false;
 			}
+
+			// for each setup step sub task
+			Object.entries(setupStep.setupStepTasks).forEach((setupStepTaskMapping) => {
+				const [setupStepTaskId, setupStepTask] = setupStepTaskMapping;
+
+				// if there is an entry for this setup step sub task in the userdata store
+				if (
+					Object.hasOwn(userdata.machineSettings, slug) &&
+					Object.hasOwn(userdata.machineSettings[slug].setupStepSettings, +setupStepId) &&
+					Object.hasOwn(
+						userdata.machineSettings[slug].setupStepSettings[+setupStepId].setupStepTaskSettings,
+						setupStepTaskId
+					)
+				) {
+					// use existing values
+					let setupStepTaskSettings =
+						userdata.machineSettings[slug].setupStepSettings[+setupStepId].setupStepTaskSettings[+setupStepTaskId];
+					setupStepTask.done = setupStepTaskSettings.done;
+					setupStepTask.skipped = setupStepTaskSettings.skipped;
+				} else {
+					// else use defaults
+					setupStepTask.done = false;
+					setupStepTask.skipped = false;
+				}
+			});
 		});
 	});
 
@@ -127,4 +111,4 @@ function setMachinesStoreFromSettingsStore(settings: SettingsType): MachinesType
 	return machines;
 }
 
-export const machines = <Writable<MachinesType>>derived(settings, setMachinesStoreFromSettingsStore);
+export const machines = <Writable<MachinesType>>derived(userdata, deriveMachinesStoreFromUserdata);
