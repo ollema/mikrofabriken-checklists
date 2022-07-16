@@ -1,18 +1,10 @@
 <script lang="ts">
-	import type { MachineType } from 'src/models/machine';
-
-	import { machines } from './../../util/stores';
-
 	export let slug: string;
 	export let action: string;
-
-	$: currentMachine = <MachineType>Object.values($machines).find((obj) => {
-		return obj.slug === slug;
-	});
 </script>
 
 <a
-	href="/machines/{currentMachine.slug}/{action}"
+	href="/machines/{slug}/{action}"
 	class="flex flex-col items-center justify-center w-40 h-40 bg-gray-200 rounded-lg shadow-md"
 >
 	<div class="flex flex-col items-center justify-center">

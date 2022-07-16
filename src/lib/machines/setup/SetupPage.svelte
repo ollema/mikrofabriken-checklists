@@ -4,17 +4,11 @@
 	import SetupStepPage from './step/SetupStepPage.svelte';
 
 	import SetupNav from './SetupNav.svelte';
-	import SetupStep from './SetupStepCard.svelte';
-
-	import type { MachineType } from 'src/models/machine';
+	import SetupStepCard from './SetupStepCard.svelte';
 
 	import { machines } from './../../../util/stores';
 
 	export let slug: string;
-
-	$: currentMachine = <MachineType>Object.values($machines).find((obj) => {
-		return obj.slug === slug;
-	});
 </script>
 
 <Route path="/">
@@ -23,16 +17,16 @@
 	<div class="default-width-padding mt-8">
 		<div class="flex justify-center">
 			<h1 class="font-medium text-xl">
-				the setup for the <strong>{currentMachine.title.toLowerCase()}</strong> machine consists of the following steps:
+				the setup for the <strong>{$machines[slug].title.toLowerCase()}</strong> machine consists of the following steps:
 			</h1>
 		</div>
 		<div class="flex flex-col items-center mt-8 space-y-2">
-			{#each Object.values(currentMachine.setupSteps) as setupStep, i}
-				<SetupStep {setupStep} {i} />
+			{#each Object.values($machines[slug].setupSteps) as setupStep, i}
+				<SetupStepCard {setupStep} {i} />
 			{/each}
 		</div>
 		<div class="flex flex-col items-center mt-6">
-			<a class="p-4 bg-green-600 text-white rounded-md shadow-md" href="/machines/{currentMachine.slug}/setup/step/0"
+			<a class="p-4 bg-green-600 text-white rounded-md shadow-md" href="/machines/{$machines[slug].slug}/setup/step/0"
 				>let's get started!
 			</a>
 		</div>

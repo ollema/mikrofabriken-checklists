@@ -1,20 +1,16 @@
 <script lang="ts">
-	import { resetSetupSteps } from '../../../util/settings';
-
-	import type { MachineType } from 'src/models/machine';
-
 	import { machines } from './../../../util/stores';
+	import { settings } from './../../../util/stores';
 
 	export let slug: string;
-
-	$: currentMachine = <MachineType>Object.values($machines).find((obj) => {
-		return obj.slug === slug;
-	});
-
 	export let currentStep = -1;
 
-	async function resetStep() {
-		await resetSetupSteps(currentMachine.slug);
+	function resetAllSteps() {
+		Object.keys($settings.machineSettings[slug].setupStepSettings).forEach((id) => {
+			$settings.machineSettings[slug].setupStepSettings[+id].done = false;
+			$settings.machineSettings[slug].setupStepSettings[+id].skipped = false;
+			$settings.machineSettings[slug].setupStepSettings[+id].setupStepTaskSettings = {};
+		});
 	}
 </script>
 
@@ -23,35 +19,33 @@
 		<div class="flex items-center justify-between h-8">
 			{#if currentStep >= 0}
 				<div class="flex-grow basis-0 flex justify-start">
-					<a href="/machines/{currentMachine.slug}/setup">back to setup overview</a>
+					<a href="/machines/{slug}/setup">back to setup overview</a>
 				</div>
 
 				<div class="flex-grow basis-0 flex justify-center">
-					{currentMachine.title.toLowerCase()} setup
+					{$machines[slug].title.toLowerCase()} setup
 				</div>
 
-				{#if currentStep < Object.values(currentMachine.setupSteps).length - 1}
+				{#if currentStep < Object.values($machines[slug].setupSteps).length - 1}
 					<div class="flex-grow basis-0 flex justify-end">
-						<a class="text-white justify-center" href="/machines/{currentMachine.slug}/setup/step/{currentStep + 1}"
-							>skip this step</a
-						>
+						<a class="text-white justify-center" href="/machines/{slug}/setup/step/{currentStep + 1}">skip this step</a>
 					</div>
 				{:else}
 					<div class="flex-grow basis-0 flex justify-end">
-						<a class="text-white justify-center" href="/machines/{currentMachine.slug}/operate">finish setup</a>
+						<a class="text-white justify-center" href="/machines/{slug}/operate">finish setup</a>
 					</div>
 				{/if}
 			{:else}
 				<div class="flex-grow basis-0 flex justify-start">
-					<a href="/machines/{currentMachine.slug}">back to machine overview</a>
+					<a href="/machines/{slug}">back to machine overview</a>
 				</div>
 
 				<div class="flex-grow basis-0 flex justify-center">
-					{currentMachine.title.toLowerCase()} setup
+					{$machines[slug].title.toLowerCase()} setup
 				</div>
 
 				<div class="flex-grow basis-0 flex justify-end">
-					<a class="text-white justify-center" href="/machines/{currentMachine.slug}/setup/step/0">start</a>
+					<a class="text-white justify-center" href="/machines/{slug}/setup/step/0">start</a>
 				</div>
 			{/if}
 		</div>
@@ -66,22 +60,17 @@
 			{#if currentStep >= 0}
 				<div class="flex-grow basis-0 flex items-center justify-center">
 					<div>progress:&nbsp;</div>
-					{#each Object.values(currentMachine.setupSteps) as setupStep, i}
+					{#each Object.values($machines[slug].setupSteps) as setupStep, i}
 						<div class="px-[0.15rem]">
-							<a
-								class="text-gray-500"
-								class:text-green-500={setupStep.done}
-								href="/machines/{currentMachine.slug}/setup/step/{i}">█</a
+							<a class="text-gray-500" class:text-green-500={setupStep.done} href="/machines/{slug}/setup/step/{i}">█</a
 							>
 						</div>
 					{/each}
-					<div>&nbsp;{currentStep + 1}/{Object.values(currentMachine.setupSteps).length}</div>
+					<div>&nbsp;{currentStep + 1}/{Object.values($machines[slug].setupSteps).length}</div>
 				</div>
 				<div class="flex-grow basis-0 flex justify-end">
-					<a
-						href="/machines/{currentMachine.slug}/setup/step/{currentStep}"
-						on:click={resetStep}
-						class="text-white justify-center">reset all steps</a
+					<a on:click={resetAllSteps} href="/machines/{slug}/setup/step/{0}" class="text-white justify-center"
+						>reset all steps</a
 					>
 				</div>
 			{/if}

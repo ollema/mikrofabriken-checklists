@@ -1,13 +1,7 @@
 <script lang="ts">
-	import type { MachineType } from 'src/models/machine';
-
 	import { machines } from './../../util/stores';
 
 	export let slug: string;
-
-	$: currentMachine = <MachineType>Object.values($machines).find((obj) => {
-		return obj.slug === slug;
-	});
 </script>
 
 <nav data-tauri-drag-region class="bg-gray-800 text-white">
@@ -17,17 +11,17 @@
 				<a href="/">back to all machines</a>
 			</div>
 			<div class="flex-grow basis-0 flex justify-center">
-				{currentMachine.title.toLowerCase()}
+				{$machines[slug].title.toLowerCase()}
 			</div>
 			<div class="flex-grow basis-0 flex justify-end space-x-8">
 				<div>
-					<a href="/machines/{currentMachine.slug}/setup">setup</a>
+					<a href="/machines/{slug}/setup">setup</a>
 				</div>
 				<div>
-					<a href="/machines/{currentMachine.slug}/operate">operate</a>
+					<a href="/machines/{slug}/operate">operate</a>
 				</div>
 				<div>
-					<a href="/machines/{currentMachine.slug}/cleanup">cleanup</a>
+					<a href="/machines/{slug}/cleanup">cleanup</a>
 				</div>
 			</div>
 		</div>

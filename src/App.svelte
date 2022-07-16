@@ -16,7 +16,7 @@
 	</div>
 </Route>
 
-{#each $machines as machine}
+{#each Object.values($machines) as machine}
 	<Route path="/machines/{machine.slug}/*">
 		<MachinePage slug={machine.slug} />
 	</Route>
