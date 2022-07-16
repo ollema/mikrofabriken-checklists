@@ -32,7 +32,7 @@
 					</div>
 				{:else}
 					<div class="flex-grow basis-0 flex justify-end">
-						<a class="text-white justify-center" href="/machines/{slug}/operate">finish setup</a>
+						<a class="text-white justify-center" href="/machines/{slug}/operation">finish setup</a>
 					</div>
 				{/if}
 			{:else}

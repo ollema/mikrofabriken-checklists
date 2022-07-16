@@ -3,7 +3,7 @@
 	import SetupStepTask from './SetupStepTask.svelte';
 
 	import { machines } from './../../../../util/stores';
-	import { settings } from './../../../../util/stores';
+	import { settings, setSetupStepDone } from './../../../../util/stores';
 
 	export let slug: string;
 	export let currentStep = -1;
@@ -11,8 +11,7 @@
 	$: id = Object.values($machines[slug].setupSteps)[currentStep].id;
 
 	function setDone() {
-		$settings.machineSettings[slug].setupStepSettings[id].done = true;
-		$settings.machineSettings[slug].setupStepSettings[id].skipped = false;
+		setSetupStepDone(slug, id);
 	}
 </script>
 
@@ -29,12 +28,20 @@
 			<SetupStepTask {setupStepTask} {i} />
 		{/each}
 	</div>
-	<div class="flex flex-col items-center mt-6">
-		<a
-			on:click={setDone}
-			class="p-4 bg-green-600 text-white rounded-md shadow-md"
-			href="/machines/{slug}/setup/step/{currentStep + 1}"
-			>finish step
-		</a>
-	</div>
+	{#if currentStep < Object.values($machines[slug].setupSteps).length - 1}
+		<div class="flex flex-col items-center mt-6">
+			<a
+				on:click={setDone}
+				class="p-4 bg-green-600 text-white rounded-md shadow-md"
+				href="/machines/{slug}/setup/step/{currentStep + 1}"
+				>finish step
+			</a>
+		</div>
+	{:else}
+		<div class="flex flex-col items-center mt-6">
+			<a on:click={setDone} class="p-4 bg-green-600 text-white rounded-md shadow-md" href="/machines/{slug}/operation"
+				>finish step
+			</a>
+		</div>
+	{/if}
 </div>

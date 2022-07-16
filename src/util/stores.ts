@@ -4,7 +4,7 @@ import { exists } from 'tauri-plugin-fs-extra-api';
 
 import Ajv from 'ajv';
 
-import { writable, derived, type Writable } from 'svelte/store';
+import { writable, derived, get, type Writable } from 'svelte/store';
 
 import type { MachinesType } from '../models/machine';
 import type { SettingsType } from '../models/settings';
@@ -64,6 +64,34 @@ export const createSettingsStore = async () => {
 };
 
 export const settings = await createSettingsStore();
+
+export function setSetupStepDone(slug: string, id: number) {
+	let _settings = get(settings);
+	if (Object.hasOwn(_settings.machineSettings, slug)) {
+		if (Object.hasOwn(_settings.machineSettings[slug].setupStepSettings, id)) {
+			_settings.machineSettings[slug].setupStepSettings[id].done = true;
+			_settings.machineSettings[slug].setupStepSettings[id].skipped = false;
+		} else {
+			_settings.machineSettings[slug].setupStepSettings[id] = {
+				done: true,
+				skipped: false,
+				setupStepTaskSettings: {}
+			};
+		}
+	} else {
+		_settings.machineSettings[slug] = {
+			setupStepSettings: {
+				[id]: {
+					done: true,
+					skipped: false,
+					setupStepTaskSettings: {}
+				}
+			}
+		};
+	}
+
+	settings.set(_settings);
+}
 
 export const defaultMachines = { laser: laser };
 
