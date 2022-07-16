@@ -1,7 +1,7 @@
 <script lang="ts">
-	import type { SetupStep } from '../../../models/machine';
+	import type { SetupStepType } from '../../../models/machine';
 
-	export let setupStep: SetupStep;
+	export let setupStep: SetupStepType;
 	export let i: number;
 </script>
 

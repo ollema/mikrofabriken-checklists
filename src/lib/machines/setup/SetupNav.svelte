@@ -1,9 +1,21 @@
 <script lang="ts">
-	import type { MachineType } from '../../../models/machine';
+	import { resetSetupSteps } from '../../../util/settings';
 
-	export let currentMachine: MachineType;
+	import type { MachineType } from 'src/models/machine';
+
+	import { machines } from './../../../util/stores';
+
+	export let slug: string;
+
+	$: currentMachine = <MachineType>Object.values($machines).find((obj) => {
+		return obj.slug === slug;
+	});
+
 	export let currentStep = -1;
-	currentStep = currentStep;
+
+	async function resetStep() {
+		await resetSetupSteps(currentMachine.slug);
+	}
 </script>
 
 <nav data-tauri-drag-region class="bg-gray-800 text-white">
@@ -54,17 +66,23 @@
 			{#if currentStep >= 0}
 				<div class="flex-grow basis-0 flex items-center justify-center">
 					<div>progress:&nbsp;</div>
-					{#each Object.values(currentMachine.setupSteps) as step, i}
+					{#each Object.values(currentMachine.setupSteps) as setupStep, i}
 						<div class="px-[0.15rem]">
-							<a class="text-gray-500" class:text-green-500={step} href="/machines/{currentMachine.slug}/setup/step/{i}"
-								>█</a
+							<a
+								class="text-gray-500"
+								class:text-green-500={setupStep.done}
+								href="/machines/{currentMachine.slug}/setup/step/{i}">█</a
 							>
 						</div>
 					{/each}
 					<div>&nbsp;{currentStep + 1}/{Object.values(currentMachine.setupSteps).length}</div>
 				</div>
 				<div class="flex-grow basis-0 flex justify-end">
-					<a class="text-white justify-center" href="/machines/{currentMachine.slug}/setup/reset">reset all steps</a>
+					<a
+						href="/machines/{currentMachine.slug}/setup/step/{currentStep}"
+						on:click={resetStep}
+						class="text-white justify-center">reset all steps</a
+					>
 				</div>
 			{/if}
 		</div>
