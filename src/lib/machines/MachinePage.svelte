@@ -2,6 +2,8 @@
 	import { Route } from 'tinro';
 
 	import SetupPage from './setup/SetupPage.svelte';
+	import CleanupPage from './cleanup/CleanupPage.svelte';
+	import OperationPage from './operate/OperationPage.svelte';
 
 	import MachineNav from './MachineNav.svelte';
 	import MachineButton from './MachineButton.svelte';
@@ -25,7 +27,7 @@
 				<MachineButton {slug} action="setup" />
 			</div>
 			<div>
-				<MachineButton {slug} action="operate" />
+				<MachineButton {slug} action="operation" />
 			</div>
 			<div>
 				<MachineButton {slug} action="cleanup" />
@@ -36,4 +38,12 @@
 
 <Route path="/setup/*">
 	<SetupPage {slug} />
+</Route>
+
+<Route path="/operation/*">
+	<OperationPage {slug} />
+</Route>
+
+<Route path="/cleanup/*">
+	<CleanupPage {slug} />
 </Route>
