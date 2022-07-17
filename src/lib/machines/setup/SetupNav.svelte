@@ -53,23 +53,18 @@
 		<div class="flex items-center justify-between h-8">
 			<div class="flex-grow basis-0 flex justify-start"><a href="/users">user: name surname / 1234678</a></div>
 
-			{#if currentStep >= 0}
-				<div class="flex-grow basis-0 flex items-center justify-center">
-					<div>progress:&nbsp;</div>
-					{#each Object.values($machines[slug].setupSteps) as setupStep, i}
-						<div class="px-[0.15rem]">
-							<a class="text-gray-500" class:text-green-500={setupStep.done} href="/machines/{slug}/setup/step/{i}">█</a
-							>
-						</div>
-					{/each}
-					<div>&nbsp;{currentStep + 1}/{Object.values($machines[slug].setupSteps).length}</div>
-				</div>
-				<div class="flex-grow basis-0 flex justify-end">
-					<a on:click={resetAllSteps} href="/machines/{slug}/setup/step/{0}" class="text-white justify-center"
-						>reset all steps</a
-					>
-				</div>
-			{/if}
+			<div class="flex-grow basis-0 flex items-center justify-center">
+				<div>progress:&nbsp;</div>
+				{#each Object.values($machines[slug].setupSteps) as setupStep, i}
+					<div class="px-[0.15rem]">
+						<a class="text-gray-500" class:text-green-500={setupStep.done} href="/machines/{slug}/setup/step/{i}">█</a>
+					</div>
+				{/each}
+			</div>
+
+			<div class="flex-grow basis-0 flex justify-end">
+				<a on:click={resetAllSteps} href="/machines/{slug}/setup/" class="text-white justify-center">reset all steps</a>
+			</div>
 		</div>
 	</div>
 </nav>

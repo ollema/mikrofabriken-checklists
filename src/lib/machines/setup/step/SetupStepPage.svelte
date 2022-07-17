@@ -8,10 +8,10 @@
 	export let slug: string;
 	export let currentStep = -1;
 
-	$: id = Object.values($machines[slug].setupSteps)[currentStep].id;
+	$: setupStepId = Object.values($machines[slug].setupSteps)[currentStep].id;
 
 	function setDone() {
-		setSetupStepDone(slug, id);
+		setSetupStepDone(slug, setupStepId);
 	}
 </script>
 
@@ -25,7 +25,7 @@
 	</div>
 	<div class="flex flex-col items-center mt-8 space-y-2">
 		{#each Object.values(Object.values($machines[slug].setupSteps)[currentStep].setupStepTasks) as setupStepTask, i}
-			<SetupStepTask {setupStepTask} {i} />
+			<SetupStepTask {slug} {currentStep} {setupStepId} setupStepTaskId={setupStepTask.id} />
 		{/each}
 	</div>
 	{#if currentStep < Object.values($machines[slug].setupSteps).length - 1}

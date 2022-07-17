@@ -8,14 +8,13 @@ import type { UserdataType } from '../models/userdata';
 
 const userdataDir = 'mikrofabriken-checklists';
 const userdataPath = `${userdataDir}/userdata.json`;
+await createDir(userdataDir, { dir: BaseDirectory.Config, recursive: true });
 
 export async function loadUserdata(): Promise<UserdataType> {
-	await createDir(userdataDir, { dir: BaseDirectory.Config, recursive: true });
-
 	let userdata: UserdataType;
 	try {
 		userdata = JSON.parse(await readTextFile(userdataPath, { dir: BaseDirectory.Config }));
-	} catch (error) {
+	} catch {
 		userdata = { machineSettings: {} };
 	}
 

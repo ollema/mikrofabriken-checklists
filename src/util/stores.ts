@@ -52,6 +52,35 @@ export function resetSetupSteps(slug: string) {
 	userdata.set(_userdata);
 }
 
+export function toggleSetupStepTaskDone(slug: string, setupStepId: number, setupStepTaskId: number) {
+	const _userdata = get(userdata);
+	if (Object.hasOwn(_userdata.machineSettings, slug)) {
+		if (Object.hasOwn(_userdata.machineSettings[slug].setupStepSettings, setupStepId)) {
+			_userdata.machineSettings[slug].setupStepSettings[setupStepId].done = true;
+			_userdata.machineSettings[slug].setupStepSettings[setupStepId].skipped = false;
+		} else {
+			_userdata.machineSettings[slug].setupStepSettings[setupStepId] = {
+				done: true,
+				skipped: false,
+				setupStepTaskSettings: { [setupStepTaskId]: { done: true, skipped: false } }
+			};
+		}
+	} else {
+		_userdata.machineSettings[slug] = {
+			setupStepSettings: {
+				[setupStepId]: {
+					done: true,
+					skipped: false,
+					setupStepTaskSettings: {
+						[setupStepTaskId]: { done: true, skipped: false }
+					}
+				}
+			}
+		};
+	}
+	userdata.set(_userdata);
+}
+
 export const defaultMachines = { laser: laser };
 
 function deriveMachinesStoreFromUserdata(userdata: UserdataType): MachinesType {
