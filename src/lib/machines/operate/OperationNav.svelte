@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { machines } from './../../../util/stores';
+	import { machines } from '../../../data/machines/machines';
 
 	export let slug: string;
 </script>
@@ -12,7 +12,7 @@
 			</div>
 
 			<div class="flex-grow basis-0 flex justify-center">
-				{$machines[slug].title.toLowerCase()} operation
+				{machines[slug].title.toLowerCase()} operation
 			</div>
 
 			<div class="flex-grow basis-0 flex justify-end" />

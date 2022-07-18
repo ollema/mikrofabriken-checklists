@@ -1,13 +1,8 @@
 <script lang="ts">
-	import { machines } from './../../../util/stores';
-	import { resetSetupSteps } from './../../../util/stores';
+	import { machines } from '../../../data/machines/machines';
 
 	export let slug: string;
 	export let currentStep = -1;
-
-	function resetAllSteps() {
-		resetSetupSteps(slug);
-	}
 </script>
 
 <nav data-tauri-drag-region class="bg-gray-800 text-white">
@@ -19,10 +14,10 @@
 				</div>
 
 				<div class="flex-grow basis-0 flex justify-center">
-					{$machines[slug].title.toLowerCase()} setup
+					{machines[slug].title.toLowerCase()} setup
 				</div>
 
-				{#if currentStep < Object.values($machines[slug].setupSteps).length - 1}
+				{#if currentStep < Object.values(machines[slug].setupSteps).length - 1}
 					<div class="flex-grow basis-0 flex justify-end">
 						<a class="text-white justify-center" href="/machines/{slug}/setup/step/{currentStep + 1}">skip this step</a>
 					</div>
@@ -37,7 +32,7 @@
 				</div>
 
 				<div class="flex-grow basis-0 flex justify-center">
-					{$machines[slug].title.toLowerCase()} setup
+					{machines[slug].title.toLowerCase()} setup
 				</div>
 
 				<div class="flex-grow basis-0 flex justify-end">
@@ -55,15 +50,15 @@
 
 			<div class="flex-grow basis-0 flex items-center justify-center">
 				<div>progress:&nbsp;</div>
-				{#each Object.values($machines[slug].setupSteps) as setupStep, i}
+				{#each Object.values(machines[slug].setupSteps) as setupStep, i}
 					<div class="px-[0.15rem]">
-						<a class="text-gray-500" class:text-green-500={setupStep.done} href="/machines/{slug}/setup/step/{i}">█</a>
+						<a class="text-gray-500" href="/machines/{slug}/setup/step/{i}">█</a>
 					</div>
 				{/each}
 			</div>
 
 			<div class="flex-grow basis-0 flex justify-end">
-				<a on:click={resetAllSteps} href="/machines/{slug}/setup/" class="text-white justify-center">reset all steps</a>
+				<a href="/machines/{slug}/setup/" class="text-white justify-center">reset all steps</a>
 			</div>
 		</div>
 	</div>

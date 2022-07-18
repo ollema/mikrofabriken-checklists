@@ -1,12 +1,11 @@
 <script lang="ts">
+	import { appWindow } from '@tauri-apps/api/window';
 	import { Route } from 'tinro';
+
+	import { machines } from './data/machines/machines';
 
 	import BaseNav from './lib/BaseNav.svelte';
 	import MachinePage from './lib/machines/MachinePage.svelte';
-
-	import { machines } from './util/stores';
-
-	import { appWindow } from '@tauri-apps/api/window';
 
 	// eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
 	document.getElementById('titlebar-minimize')!.addEventListener('click', () => appWindow.minimize());
@@ -25,7 +24,7 @@
 	</div>
 </Route>
 
-{#each Object.values($machines) as machine}
+{#each Object.values(machines) as machine}
 	<Route path="/machines/{machine.slug}/*">
 		<MachinePage slug={machine.slug} />
 	</Route>

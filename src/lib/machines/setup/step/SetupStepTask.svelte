@@ -1,10 +1,9 @@
 <script lang="ts">
-	import { machines } from './../../../../util/stores';
+	import { machines } from '../../../../data/machines/machines';
 
 	export let slug: string;
-	export let currentStep = -1;
-	export let setupStepId: number;
-	export let setupStepTaskId: number;
+	export let setupStepId: string;
+	export let setupStepTaskId: string;
 
 	let expanded = false;
 
@@ -15,19 +14,13 @@
 
 <div class="flex w-full max-w-4xl bg-gray-200 rounded-lg shadow-md p-4">
 	<div class="flex items-baseline">
-		<input
-			type="checkbox"
-			class="grow-0 shrink-0 w-8 h-8 mr-4"
-			checked={$machines[slug].setupSteps[setupStepId].setupStepTasks[setupStepTaskId].done}
-		/>
+		<input type="checkbox" class="grow-0 shrink-0 w-8 h-8 mr-4" />
 	</div>
 
 	<div class="flex-grow">
 		<div class="flex items-center justify-between">
 			<div class="flex-grow">
-				{currentStep + 1}: {$machines[slug].setupSteps[setupStepId].setupStepTasks[
-					setupStepTaskId
-				].title.toLocaleLowerCase()}
+				{machines[slug].setupSteps[setupStepId].setupStepTasks[setupStepTaskId].title.toLocaleLowerCase()}
 			</div>
 
 			<div>

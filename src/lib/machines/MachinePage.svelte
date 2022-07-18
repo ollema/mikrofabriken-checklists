@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { Route } from 'tinro';
 
-	import SetupPage from './setup/SetupPage.svelte';
-	import CleanupPage from './cleanup/CleanupPage.svelte';
-	import OperationPage from './operate/OperationPage.svelte';
+	import { machines } from '../../data/machines/machines';
 
 	import MachineNav from './MachineNav.svelte';
 	import MachineButton from './MachineButton.svelte';
 
-	import { machines } from './../../util/stores';
+	import SetupPage from './setup/SetupPage.svelte';
+	import CleanupPage from './cleanup/CleanupPage.svelte';
+	import OperationPage from './operate/OperationPage.svelte';
 
 	export let slug: string;
 </script>
@@ -19,7 +19,7 @@
 	<div class="default-width-padding mt-16">
 		<div class="flex justify-center">
 			<h1 class="font-medium text-xl">
-				checklists for the <strong>{$machines[slug].title.toLowerCase()}</strong> machine
+				checklists for the <strong>{machines[slug].title.toLowerCase()}</strong> machine
 			</h1>
 		</div>
 		<div class="flex justify-center mt-8 space-x-8">
