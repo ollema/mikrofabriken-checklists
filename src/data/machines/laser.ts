@@ -1,4 +1,4 @@
-import type { MachineType } from '../types/machine';
+import type { MachineType } from '../types/machines';
 
 export const laser: MachineType = {
 	slug: 'laser',

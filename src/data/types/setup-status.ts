@@ -1,4 +1,5 @@
-export type SetupStatusType = {
-	key: string;
-	value: string;
-};
+export enum Status {
+	Todo = 'TODO',
+	Skipped = 'SKIPPED',
+	Done = 'DONE'
+}

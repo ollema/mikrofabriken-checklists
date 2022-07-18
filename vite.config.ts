@@ -6,5 +6,8 @@ export default defineConfig({
 	plugins: [svelte()],
 	build: {
 		target: 'esnext'
+	},
+	optimizeDeps: {
+		exclude: ['tinro']
 	}
 });

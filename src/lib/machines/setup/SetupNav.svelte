@@ -1,8 +1,19 @@
 <script lang="ts">
+	import SetupNavProgessBlock from './SetupNavProgessBlock.svelte';
+
 	import { machines } from '../../../data/machines/machines';
+	import { setTodo } from '../../../data/db/setup-status';
 
 	export let slug: string;
 	export let currentStep = -1;
+
+	function resetSetupStep() {
+		Object.keys(machines[slug].setupSteps).forEach((setupStepId) => {
+			setTodo(slug, setupStepId);
+			slug = slug;
+			currentStep = currentStep;
+		});
+	}
 </script>
 
 <nav data-tauri-drag-region class="bg-gray-800 text-white">
@@ -50,15 +61,16 @@
 
 			<div class="flex-grow basis-0 flex items-center justify-center">
 				<div>progress:&nbsp;</div>
-				{#each Object.values(machines[slug].setupSteps) as setupStep, i}
-					<div class="px-[0.15rem]">
-						<a class="text-gray-500" href="/machines/{slug}/setup/step/{i}">█</a>
-					</div>
-				{/each}
+				{#key slug}
+					{#each Object.keys(machines[slug].setupSteps) as setupStepId, i}
+						<SetupNavProgessBlock {slug} {setupStepId} {i} />
+					{/each}
+				{/key}
 			</div>
 
 			<div class="flex-grow basis-0 flex justify-end">
-				<a href="/machines/{slug}/setup/" class="text-white justify-center">reset all steps</a>
+				<a on:click={resetSetupStep} href="/machines/{slug}/setup/" class="text-white justify-center">reset all steps</a
+				>
 			</div>
 		</div>
 	</div>
