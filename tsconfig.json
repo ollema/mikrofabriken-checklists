@@ -9,7 +9,11 @@
 		"allowJs": true,
 		"checkJs": true,
 		"isolatedModules": true,
-		"strictNullChecks": true
+		"strictNullChecks": true,
+		"paths": {
+			"$lib/*": ["src/lib/*"],
+			"$data/*": ["src/data/*"],
+		}
 	},
 	"include": ["src/**/*.d.ts", "src/**/*.ts", "src/**/*.js", "src/**/*.svelte"],
 	"references": [{ "path": "./tsconfig.node.json" }]

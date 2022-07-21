@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { machines } from '../../../../data/machines/machines';
+	import { machines } from '$data/stores/machines';
 
 	export let slug: string;
-	export let setupStepId: string;
-	export let setupStepTaskId: string;
+	export let stepId: string;
+	export let taskId: string;
 
 	let expanded = false;
 
@@ -20,7 +20,7 @@
 	<div class="flex-grow">
 		<div class="flex items-center justify-between">
 			<div class="flex-grow">
-				{machines[slug].setupSteps[setupStepId].setupStepTasks[setupStepTaskId].title.toLocaleLowerCase()}
+				{$machines[slug].setupSteps[stepId].tasks[taskId].title.toLocaleLowerCase()}
 			</div>
 
 			<div>

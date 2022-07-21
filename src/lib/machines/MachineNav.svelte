@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { machines } from '../../data/machines/machines';
+	import { machines } from '$data/stores/machines';
 
 	export let slug: string;
 </script>
@@ -11,7 +11,7 @@
 				<a href="/">back to all machines</a>
 			</div>
 			<div class="flex-grow basis-0 flex justify-center">
-				{machines[slug].title.toLowerCase()}
+				{$machines[slug].title.toLowerCase()}
 			</div>
 			<div class="flex-grow basis-0 flex justify-end space-x-8">
 				<div>

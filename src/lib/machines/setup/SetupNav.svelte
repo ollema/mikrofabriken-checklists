@@ -1,17 +1,19 @@
 <script lang="ts">
-	import SetupNavProgessBlock from './SetupNavProgessBlock.svelte';
-
-	import { machines } from '../../../data/machines/machines';
-	import { setTodo } from '../../../data/db/setup-status';
+	import { machines } from '$data/stores/machines';
+	import { Status } from '$data/types/machines';
 
 	export let slug: string;
 	export let currentStep = -1;
 
+	$: stepId = Object.keys($machines[slug].setupSteps)[currentStep];
+
+	function setSetupStepDone() {
+		machines.setDone(slug, stepId);
+	}
+
 	function resetSetupStep() {
-		Object.keys(machines[slug].setupSteps).forEach((setupStepId) => {
-			setTodo(slug, setupStepId);
-			slug = slug;
-			currentStep = currentStep;
+		Object.keys($machines[slug].setupSteps).forEach((stepId) => {
+			machines.setTodo(slug, stepId);
 		});
 	}
 </script>
@@ -25,16 +27,22 @@
 				</div>
 
 				<div class="flex-grow basis-0 flex justify-center">
-					{machines[slug].title.toLowerCase()} setup
+					{$machines[slug].title.toLowerCase()} setup
 				</div>
 
-				{#if currentStep < Object.values(machines[slug].setupSteps).length - 1}
+				{#if currentStep < Object.values($machines[slug].setupSteps).length - 1}
 					<div class="flex-grow basis-0 flex justify-end">
-						<a class="text-white justify-center" href="/machines/{slug}/setup/step/{currentStep + 1}">skip this step</a>
+						<a
+							on:click={setSetupStepDone}
+							class="text-white justify-center"
+							href="/machines/{slug}/setup/step/{currentStep + 1}">skip this step</a
+						>
 					</div>
 				{:else}
 					<div class="flex-grow basis-0 flex justify-end">
-						<a class="text-white justify-center" href="/machines/{slug}/operation">finish setup</a>
+						<a on:click={setSetupStepDone} class="text-white justify-center" href="/machines/{slug}/operation"
+							>finish setup</a
+						>
 					</div>
 				{/if}
 			{:else}
@@ -43,7 +51,7 @@
 				</div>
 
 				<div class="flex-grow basis-0 flex justify-center">
-					{machines[slug].title.toLowerCase()} setup
+					{$machines[slug].title.toLowerCase()} setup
 				</div>
 
 				<div class="flex-grow basis-0 flex justify-end">
@@ -61,11 +69,15 @@
 
 			<div class="flex-grow basis-0 flex items-center justify-center">
 				<div>progress:&nbsp;</div>
-				{#key slug}
-					{#each Object.keys(machines[slug].setupSteps) as setupStepId, i}
-						<SetupNavProgessBlock {slug} {setupStepId} {i} />
-					{/each}
-				{/key}
+				{#each Object.keys($machines[slug].setupSteps) as stepId, i}
+					<div class="px-[0.15rem]">
+						<a
+							href="/machines/{slug}/setup/step/{i}"
+							class="text-gray-500"
+							class:text-green-500={$machines[slug].setupSteps[stepId].status.default === Status.Done}>█</a
+						>
+					</div>
+				{/each}
 			</div>
 
 			<div class="flex-grow basis-0 flex justify-end">

@@ -1,5 +1,5 @@
 import Database from 'tauri-plugin-sql-api';
-import { Status } from '../types/setup-status';
+import { Status } from '$data/types/machines';
 
 const db = await Database.load('sqlite:mikrofabriken-checklists.db');
 
@@ -36,8 +36,6 @@ export async function setStatus(status: Status, machineSlug: string, setupStepId
 	const query = `--sql
         INSERT INTO setup_status_kv (key, value) VALUES ($1, $2) ON CONFLICT(key) DO UPDATE SET value = excluded.value
     `;
-	console.log(key, query);
-
 	await db.execute(query, [key, status]);
 }
 

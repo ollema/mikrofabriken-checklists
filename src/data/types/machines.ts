@@ -1,21 +1,28 @@
-export type SetupStepTaskType = {
+export enum Status {
+	Todo = 'TODO',
+	Skipped = 'SKIPPED',
+	Done = 'DONE'
+}
+
+type TaskType = {
 	title: string;
 	desc?: string;
+	status: { [user: string]: Status };
 };
 
-export type SetupStepType = {
+type StepType = {
 	title: string;
 	desc?: string;
+	status: { [user: string]: Status };
 
-	setupStepTasks: { [key: string]: SetupStepTaskType };
+	tasks: { [taskId: string]: TaskType };
 };
 
 export type MachineType = {
-	slug: string;
 	title: string;
 	desc?: string;
 
-	setupSteps: { [key: string]: SetupStepType };
+	setupSteps: { [stepId: string]: StepType };
 };
 
-export type MachinesType = { [key: string]: MachineType };
+export type MachinesType = { [slug: string]: MachineType };
