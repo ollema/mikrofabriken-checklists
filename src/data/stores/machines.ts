@@ -1,16 +1,16 @@
-import { writable, get } from 'svelte/store';
+import { writable } from 'svelte/store';
 import type { Writable } from 'svelte/store';
 
 import { Status, type MachinesType } from '$data/types/machines';
 import { laser } from '$data/machines/laser';
 
-function constructKey(slug: string, stepId: string, taskId?: string) {
-	if (taskId) {
-		return `${slug} - ${stepId} - ${taskId}`;
-	} else {
-		return `${slug} - ${stepId}`;
-	}
-}
+// function constructKey(slug: string, stepId: string, taskId?: string) {
+// 	if (taskId) {
+// 		return `${slug} - ${stepId} - ${taskId}`;
+// 	} else {
+// 		return `${slug} - ${stepId}`;
+// 	}
+// }
 
 function initializeStore(): MachinesType {
 	return { laser: laser };
@@ -20,7 +20,7 @@ function machinesStore() {
 	const store = <Writable<MachinesType>>writable(initializeStore());
 
 	function setStatus(status: Status, slug: string, stepId: string, taskId?: string) {
-		const key = constructKey(slug, stepId, taskId);
+		// const key = constructKey(slug, stepId, taskId);
 
 		if (taskId) {
 			store.update(($store) => (($store[slug].setupSteps[stepId].tasks[taskId].status = { default: status }), $store));

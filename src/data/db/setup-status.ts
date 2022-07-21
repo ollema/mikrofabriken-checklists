@@ -16,7 +16,7 @@ export async function getStatus(machineSlug: string, setupStepId: string, setupS
 	const query = `--sql
         SELECT * FROM setup_status_kv WHERE key = $1
     `;
-	const result = <Object[]>await db.select(query, [key]);
+	const result = <Record<string, unknown>[]>await db.select(query, [key]);
 
 	if (result.length > 0) {
 		if (Object.hasOwn(result[0], 'value')) {

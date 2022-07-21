@@ -12,7 +12,7 @@
 		"strictNullChecks": true,
 		"paths": {
 			"$lib/*": ["src/lib/*"],
-			"$data/*": ["src/data/*"],
+			"$data/*": ["src/data/*"]
 		}
 	},
 	"include": ["src/**/*.d.ts", "src/**/*.ts", "src/**/*.js", "src/**/*.svelte"],
