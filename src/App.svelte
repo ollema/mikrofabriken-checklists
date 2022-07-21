@@ -17,11 +17,9 @@
 
 <Route path="/">
 	<BaseNav />
-	<div class="default-width-padding">
-		<div class="flex justify-center">
-			<h1 class="font-medium text-xl">mikrofabriken checklists</h1>
-		</div>
-	</div>
+	<main>
+		<h1>mikrofabriken checklists</h1>
+	</main>
 </Route>
 
 {#each Object.keys($machines) as slug}

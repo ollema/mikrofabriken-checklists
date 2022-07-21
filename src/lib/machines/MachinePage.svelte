@@ -15,14 +15,12 @@
 
 <Route path="/">
 	<MachineNav {slug} />
+	<main>
+		<h1>
+			checklists for the <strong>{$machines[slug].title.toLowerCase()}</strong> machine
+		</h1>
 
-	<div class="default-width-padding mt-16">
-		<div class="flex justify-center">
-			<h1 class="font-medium text-xl">
-				checklists for the <strong>{$machines[slug].title.toLowerCase()}</strong> machine
-			</h1>
-		</div>
-		<div class="flex justify-center mt-8 space-x-8">
+		<div class="buttons">
 			<div>
 				<MachineButton {slug} action="setup" />
 			</div>
@@ -33,7 +31,7 @@
 				<MachineButton {slug} action="cleanup" />
 			</div>
 		</div>
-	</div>
+	</main>
 </Route>
 
 <Route path="/setup/*">
@@ -47,3 +45,9 @@
 <Route path="/cleanup/*">
 	<CleanupPage {slug} />
 </Route>
+
+<style lang="postcss">
+	.buttons {
+		@apply flex items-center justify-center mt-8 space-x-8;
+	}
+</style>
