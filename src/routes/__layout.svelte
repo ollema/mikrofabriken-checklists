@@ -12,7 +12,6 @@
 <Nav {section} {machineId} {action} {stepId} />
 
 <main>
-	{section} / {machineId} /{action} / ... /{stepId}
 	<slot />
 </main>
 
@@ -23,7 +22,7 @@
 		align-items: center;
 		justify-content: center;
 
-		max-width: 80rem;
+		max-width: 70rem;
 		padding: 2rem 0;
 		margin: 0 auto;
 	}

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { machines } from '$lib/data/stores/machines';
+	import SetupProgressBlock from '$lib/components/SetupProgressBlock.svelte';
 
 	export let section: string | undefined;
 	export let machineId: string | undefined;
@@ -9,8 +10,8 @@
 
 <nav class="top-nav">
 	<div>
-		<div class="left-nav">
-			{#if machineId !== undefined && Object.hasOwn($machines, machineId)}
+		<div class="nav-block left-nav">
+			{#if machineId !== undefined}
 				{#if action !== undefined}
 					{#if stepId !== undefined}
 						<a href="/machines/{machineId}/{action}">← back to {action} overview</a>
@@ -27,8 +28,8 @@
 			{/if}
 		</div>
 
-		<div class="middle-nav">
-			{#if machineId !== undefined && Object.hasOwn($machines, machineId)}
+		<div class="nav-block middle-nav">
+			{#if machineId !== undefined}
 				{#if action !== undefined}
 					{$machines[machineId].title.toLowerCase()}: {action}
 				{:else}
@@ -37,20 +38,45 @@
 			{/if}
 		</div>
 
-		<div class="right-nav">
-			<a href="/about" class:selected={section === 'about'}>about</a>
+		<div class="nav-block right-nav">
+			{#if machineId !== undefined}
+				<a href="/machines/{machineId}/setup" class:inactive={action !== 'setup'}>setup</a>
+				<a href="/machines/{machineId}/operate" class:inactive={action !== 'operate'}>operate</a>
+				<a href="/machines/{machineId}/cleanup" class:inactive={action !== 'cleanup'}>cleanup</a>
+			{:else}
+				<a href="/about" class:selected={section === 'about'}>about</a>
+			{/if}
 		</div>
 
-		<div class="left-nav">
+		<div class="nav-block left-nav">
 			<a href="/">user: username / rfid tag </a>
 		</div>
 
-		<div class="middle-nav">
-			<a href="/">...</a>
+		<div class="nav-block middle-nav">
+			{#if machineId !== undefined}
+				{#if action !== undefined && action === 'setup'}
+					<div>progress:&nbsp;</div>
+					{#each Object.keys($machines[machineId].setupSteps) as stepId}
+						<SetupProgressBlock {machineId} {stepId} />
+					{/each}
+				{:else}
+					<a href="/">← back to all machines</a>
+				{/if}
+			{/if}
 		</div>
 
-		<div class="right-nav">
-			<a href="/">...</a>
+		<div class="nav-block right-nav">
+			{#if machineId !== undefined}
+				{#if action !== undefined && action === 'setup'}
+					{#if stepId !== undefined}
+						<a href="/machines/{machineId}/setup/step/{stepId}">reset step</a>
+					{:else}
+						<a href="/machines/{machineId}/setup">reset setup</a>
+					{/if}
+				{:else}
+					<a href="/machines/{machineId}">reset machine</a>
+				{/if}
+			{/if}
 		</div>
 	</div>
 </nav>
@@ -58,11 +84,16 @@
 <style>
 	nav {
 		background: linear-gradient(180deg, var(--slate-800) 50%, var(--slate-700) 50%);
-		color: var(--slate-300);
+		color: var(--slate-100);
+	}
+
+	.inactive {
+		color: var(--slate-400);
 	}
 
 	a:hover {
-		color: var(--slate-50);
+		color: var(--slate-100);
+		text-decoration: underline;
 	}
 
 	nav > div {
@@ -71,25 +102,28 @@
 		grid-template-rows: repeat(2, 2rem);
 		justify-content: space-between;
 
-		max-width: 80rem;
+		max-width: 70rem;
 		margin: 0 auto;
 	}
 
-	.left-nav {
+	.nav-block {
 		display: flex;
 		align-items: center;
+	}
+
+	.nav-block > * + * {
+		margin-left: 2rem;
+	}
+
+	.left-nav {
 		justify-content: left;
 	}
 
 	.middle-nav {
-		display: flex;
-		align-items: center;
 		justify-content: center;
 	}
 
 	.right-nav {
-		display: flex;
-		align-items: center;
 		justify-content: right;
 	}
 </style>
