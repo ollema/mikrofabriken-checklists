@@ -2,10 +2,18 @@
 	import { machines } from '$lib/data/stores/machines';
 	import SetupProgressBlock from '$lib/components/SetupProgressBlock.svelte';
 
-	export let section: string | undefined;
-	export let machineId: string | undefined;
-	export let action: string | undefined;
-	export let stepId: string | undefined;
+	export let section: string;
+	export let machineId: string;
+	export let action: string;
+	export let stepId: string;
+
+	function resetSetup() {
+		machines.resetSetup(machineId);
+	}
+
+	function resetSetupStep() {
+		machines.resetSetupStep(machineId, stepId);
+	}
 </script>
 
 <nav class="top-nav">
@@ -69,12 +77,12 @@
 			{#if machineId !== undefined}
 				{#if action !== undefined && action === 'setup'}
 					{#if stepId !== undefined}
-						<a href="/machines/{machineId}/setup/step/{stepId}">reset step</a>
+						<a on:click={resetSetupStep} href="/machines/{machineId}/setup/step/{stepId}">reset step</a>
 					{:else}
-						<a href="/machines/{machineId}/setup">reset setup</a>
+						<a on:click={resetSetup} href="/machines/{machineId}/setup">reset setup</a>
 					{/if}
 				{:else}
-					<a href="/machines/{machineId}">reset machine</a>
+					<a on:click={resetSetup} href="/machines/{machineId}">reset machine</a>
 				{/if}
 			{/if}
 		</div>

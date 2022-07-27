@@ -1,4 +1,4 @@
-import { writable } from 'svelte/store';
+import { writable, get } from 'svelte/store';
 import type { Writable } from 'svelte/store';
 
 import { Status, type MachinesType } from '$lib/data/types/machines';
@@ -40,10 +40,25 @@ function machinesStore() {
 		setStatus(Status.Done, machineId, stepId, taskId);
 	}
 
+	function resetSetupStep(machineId: string, stepId: string) {
+		Object.keys(get(store)[machineId].setupSteps[stepId].tasks).forEach((taskId) => {
+			setTodo(machineId, stepId, taskId);
+		});
+		setTodo(machineId, stepId);
+	}
+
+	function resetSetup(machineId: string) {
+		Object.keys(get(store)[machineId].setupSteps).forEach((stepId) => {
+			resetSetupStep(machineId, stepId);
+		});
+	}
+
 	return {
 		subscribe: store.subscribe,
 		setTodo,
-		setDone
+		setDone,
+		resetSetupStep,
+		resetSetup
 	};
 }
 
