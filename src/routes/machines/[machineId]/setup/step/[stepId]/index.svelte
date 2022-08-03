@@ -1,7 +1,9 @@
 <script lang="ts">
-	import SetupTask from './_SetupTask.svelte';
 	import Accordion from '$lib/components/Accordion.svelte';
 	import AccordionItem from '$lib/components/AccordionItem.svelte';
+	import ToggleConfetti from '$lib/components/ToggleConfetti.svelte';
+
+	import { Confetti } from 'svelte-confetti';
 
 	import { page } from '$app/stores';
 
@@ -27,11 +29,11 @@
 		{#each Object.keys($machines[machineId].setupSteps[stepId].tasks) as taskId}
 			<div class="task">
 				<AccordionItem key={taskId}>
-					<div slot="header" class="task-header">
+					<div slot="header-title">
 						{$machines[machineId].setupSteps[stepId].tasks[taskId].title.toLocaleLowerCase()}
 					</div>
 
-					<div slot="body" class="task-body">
+					<div slot="body">
 						<p>
 							{#if $machines[machineId].setupSteps[stepId].tasks[taskId].desc !== undefined}
 								bla bla
@@ -39,7 +41,23 @@
 								-
 							{/if}
 						</p>
-						<button type="button">skip task</button>
+					</div>
+
+					<div slot="footer">
+						<div class="footer">
+							<div>
+								status: {$machines[machineId].setupSteps[stepId].tasks[taskId].status.default.toLowerCase()}
+							</div>
+
+							<div class="footer-buttons">
+								<button class="button reset-button" type="button">reset</button>
+								<button class="button skip-button" type="button">skip</button>
+								<ToggleConfetti>
+									<button slot="content" class="button done-button" type="button">done</button>
+									<Confetti />
+								</ToggleConfetti>
+							</div>
+						</div>
 					</div>
 				</AccordionItem>
 			</div>
@@ -48,11 +66,11 @@
 </Accordion>
 
 {#if currentStep < Object.values($machines[machineId].setupSteps).length - 1}
-	<a on:click={setSetupStepDone} class="button" href="/machines/{machineId}/setup/step/{nextStepId}">
+	<a on:click={setSetupStepDone} class="button finish-button" href="/machines/{machineId}/setup/step/{nextStepId}">
 		finish setup step {currentStep + 1}
 	</a>
 {:else}
-	<a on:click={setSetupStepDone} class="button" href="/machines/{machineId}/operation"> finish setup </a>
+	<a on:click={setSetupStepDone} class="finish-button" href="/machines/{machineId}/operation"> finish setup </a>
 {/if}
 
 <style>
@@ -66,42 +84,57 @@
 	}
 
 	.tasks > * + * {
-		margin-top: 0.5rem;
-	}
-
-	.tasks > div {
-		width: 100%;
-		max-width: 40rem;
+		margin-top: 0.75rem;
 	}
 
 	.task {
-		padding: 0.5rem 1rem;
-
-		background-color: var(--slate-200);
-		border: 0rem;
-		border-radius: 0.5rem;
-		box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+		width: 100%;
+		max-width: 50rem;
 	}
 
-	.task-header {
+	.footer {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 	}
 
-	.task-body {
-		padding-top: 0.5rem;
+	.footer-buttons {
+		display: flex;
+		align-items: center;
 	}
 
 	.button {
 		display: flex;
 		align-items: center;
 
+		padding: 0.4rem 0.75rem;
+		margin: -0.25rem 0.25rem;
+
+		color: var(--slate-600);
+		background-color: var(--slate-300);
+		border: 0rem;
+		border-radius: 0.5rem;
+		box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+	}
+
+	.button:hover {
+		color: var(--slate-800);
+		background-color: var(--slate-400);
+	}
+
+	.done-button {
+		margin-right: 0;
+	}
+
+	.finish-button {
+		display: flex;
+		align-items: center;
+
 		margin-top: 1rem;
 		padding: 0.75rem;
 
-		background-color: green;
 		color: var(--slate-100);
+		background-color: green;
 		border: 0rem;
 		border-radius: 0.5rem;
 		box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);

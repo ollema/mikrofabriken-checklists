@@ -22,6 +22,4 @@
 	onDestroy(unsubscribe);
 </script>
 
-<ul>
-	<slot />
-</ul>
+<slot />
