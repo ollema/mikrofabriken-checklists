@@ -67,8 +67,6 @@
 					{#each Object.keys($machines[machineId].setupSteps) as stepId}
 						<SetupProgressBlock {machineId} {stepId} />
 					{/each}
-				{:else}
-					<a href="/">← back to all machines</a>
 				{/if}
 			{/if}
 		</div>

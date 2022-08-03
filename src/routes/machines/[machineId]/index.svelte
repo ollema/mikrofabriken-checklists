@@ -30,7 +30,7 @@
 		align-items: center;
 		justify-content: center;
 
-		margin-top: 2rem;
+		margin-top: 1rem;
 	}
 
 	.buttons > * + * {

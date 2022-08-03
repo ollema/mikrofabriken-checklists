@@ -1,4 +1,8 @@
 <script lang="ts">
+	import SetupTask from './_SetupTask.svelte';
+	import Accordion from '$lib/components/Accordion.svelte';
+	import AccordionItem from '$lib/components/AccordionItem.svelte';
+
 	import { page } from '$app/stores';
 
 	import { machines } from '$lib/data/stores/machines';
@@ -9,79 +13,97 @@
 	$: currentStep = Object.keys($machines[machineId].setupSteps).indexOf(stepId);
 	$: nextStepId = Object.keys($machines[machineId].setupSteps)[currentStep + 1];
 
-	let expanded = false;
-
-	function toggleExpanded() {
-		expanded = !expanded;
-	}
-
 	function setSetupStepDone() {
 		machines.setDone(machineId, stepId);
 	}
 </script>
 
-<div class="flex justify-center">
-	<h1 class="font-medium text-xl">
-		step:
-		<strong>{$machines[machineId].setupSteps[stepId].title.toLowerCase()}</strong>
-	</h1>
-</div>
-<div class="flex flex-col items-center mt-8 space-y-2">
-	{#each Object.keys($machines[machineId].setupSteps[stepId].tasks) as taskId}
-		<div class="flex w-full max-w-4xl bg-gray-200 rounded-lg shadow-md p-4">
-			<div class="flex items-baseline">
-				<input type="checkbox" class="grow-0 shrink-0 w-8 h-8 mr-4" />
-			</div>
+<h1>
+	setup step {currentStep + 1}: <strong>{$machines[machineId].setupSteps[stepId].title.toLowerCase()}</strong>
+</h1>
 
-			<div class="flex-grow">
-				<div class="flex items-center justify-between">
-					<div class="flex-grow">
+<Accordion>
+	<div class="tasks">
+		{#each Object.keys($machines[machineId].setupSteps[stepId].tasks) as taskId}
+			<div class="task">
+				<AccordionItem key={taskId}>
+					<div slot="header" class="task-header">
 						{$machines[machineId].setupSteps[stepId].tasks[taskId].title.toLocaleLowerCase()}
 					</div>
 
-					<div>
-						<button
-							on:click={toggleExpanded}
-							type="button"
-							class="text-gray-400 flex justify-center border-2 border-gray-300 p-1 rounded-md"
-						>
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								class="h-6 w-6"
-								fill="none"
-								viewBox="0 0 24 24"
-								stroke="currentColor"
-								stroke-width="2"
-							>
-								<path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-							</svg>
-						</button>
+					<div slot="body" class="task-body">
+						<p>
+							{#if $machines[machineId].setupSteps[stepId].tasks[taskId].desc !== undefined}
+								bla bla
+							{:else}
+								-
+							{/if}
+						</p>
+						<button type="button">skip task</button>
 					</div>
-				</div>
-
-				<div class:hidden={!expanded}>
-					<div class="pt-2">bla bla bla</div>
-				</div>
+				</AccordionItem>
 			</div>
-		</div>
-	{/each}
-</div>
+		{/each}
+	</div>
+</Accordion>
+
 {#if currentStep < Object.values($machines[machineId].setupSteps).length - 1}
-	<div class="flex flex-col items-center mt-6">
-		<a
-			on:click={setSetupStepDone}
-			class="p-4 bg-green-600 text-white rounded-md shadow-md"
-			href="/machines/{machineId}/setup/step/{nextStepId}"
-			>finish step {currentStep + 1}
-		</a>
-	</div>
+	<a on:click={setSetupStepDone} class="button" href="/machines/{machineId}/setup/step/{nextStepId}">
+		finish setup step {currentStep + 1}
+	</a>
 {:else}
-	<div class="flex flex-col items-center mt-6">
-		<a
-			on:click={setSetupStepDone}
-			class="p-4 bg-green-600 text-white rounded-md shadow-md"
-			href="/machines/{machineId}/operation"
-			>finish setup
-		</a>
-	</div>
+	<a on:click={setSetupStepDone} class="button" href="/machines/{machineId}/operation"> finish setup </a>
 {/if}
+
+<style>
+	.tasks {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+
+		margin-top: 1rem;
+		width: 100%;
+	}
+
+	.tasks > * + * {
+		margin-top: 0.5rem;
+	}
+
+	.tasks > div {
+		width: 100%;
+		max-width: 40rem;
+	}
+
+	.task {
+		padding: 0.5rem 1rem;
+
+		background-color: var(--slate-200);
+		border: 0rem;
+		border-radius: 0.5rem;
+		box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+	}
+
+	.task-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.task-body {
+		padding-top: 0.5rem;
+	}
+
+	.button {
+		display: flex;
+		align-items: center;
+
+		margin-top: 1rem;
+		padding: 0.75rem;
+
+		background-color: green;
+		color: var(--slate-100);
+		border: 0rem;
+		border-radius: 0.5rem;
+		box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+	}
+</style>

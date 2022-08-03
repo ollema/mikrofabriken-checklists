@@ -5,153 +5,153 @@ export const laser: MachineType = {
 	title: 'Laser cutter',
 	setupSteps: {
 		firstStep: {
-			title: 'First setup task',
-			desc: 'First setup task for this machine',
+			title: 'First setup step',
+			desc: 'First setup step for this machine',
 			status: { default: Status.Todo },
 			tasks: {
 				firstSubTask: {
-					title: 'First setup task step for the first task',
-					desc: 'First setup task step for the first task for this machine',
+					title: 'First setup task for the first step',
+					desc: 'First setup task for the first step for this machine',
 					status: { default: Status.Todo }
 				},
 				secondSubTask: {
-					title: 'Second setup task step for the first task',
-					desc: 'Second setup task step for the first task for this machine',
+					title: 'Second setup task for the first step',
+					desc: 'Second setup task for the first step for this machine',
 					status: { default: Status.Todo }
 				},
 				thirdSubTask: {
-					title: 'Third setup task step for the first task',
-					desc: 'Third setup task step for the first task for this machine',
+					title: 'Third setup task for the first step',
+					desc: 'Third setup task for the first step for this machine',
 					status: { default: Status.Todo }
 				},
 				fourthSubTask: {
-					title: 'Fourth setup task step for the first task',
-					desc: 'Fourth setup task step for the first task for this machine',
+					title: 'Fourth setup task for the first step',
+					desc: 'Fourth setup task for the first step for this machine',
 					status: { default: Status.Todo }
 				}
 			}
 		},
 		secondStep: {
-			title: 'Second setup task',
-			desc: 'Second setup task for this machine',
+			title: 'Second setup step',
+			desc: 'Second setup step for this machine',
 			status: { default: Status.Todo },
 			tasks: {
 				firstSubTask: {
-					title: 'First setup task step for the second task',
-					desc: 'First setup task step for the second task for this machine',
+					title: 'First setup task for the second step',
+					desc: 'First setup task for the second step for this machine',
 					status: { default: Status.Todo }
 				},
 				secondSubTask: {
-					title: 'Second setup task step for the second task',
-					desc: 'Second setup task step for the second task for this machine',
+					title: 'Second setup task for the second step',
+					desc: 'Second setup task for the second step for this machine',
 					status: { default: Status.Todo }
 				},
 				thirdSubTask: {
-					title: 'Third setup task step for the second task',
-					desc: 'Third setup task step for the second task for this machine',
+					title: 'Third setup task for the second step',
+					desc: 'Third setup task for the second step for this machine',
 					status: { default: Status.Todo }
 				},
 				fourthSubTask: {
-					title: 'Fourth setup task step for the second task',
-					desc: 'Fourth setup task step for the second task for this machine',
+					title: 'Fourth setup task for the second step',
+					desc: 'Fourth setup task for the second step for this machine',
 					status: { default: Status.Todo }
 				}
 			}
 		},
 		thirdStep: {
-			title: 'Third setup task',
-			desc: 'Third setup task for this machine',
+			title: 'Third setup step',
+			desc: 'Third setup step for this machine',
 			status: { default: Status.Todo },
 			tasks: {
 				firstSubTask: {
-					title: 'First setup task step for the third task',
-					desc: 'First setup task step for the third task for this machine',
+					title: 'First setup task for the third step',
+					desc: 'First setup task for the third step for this machine',
 					status: { default: Status.Todo }
 				},
 				secondSubTask: {
-					title: 'Second setup task step for the third task',
-					desc: 'Second setup task step for the third task for this machine',
+					title: 'Second setup task for the third step',
+					desc: 'Second setup task for the third step for this machine',
 					status: { default: Status.Todo }
 				},
 				thirdSubTask: {
-					title: 'Third setup task step for the third task',
-					desc: 'Third setup task step for the third task for this machine',
+					title: 'Third setup task for the third step',
+					desc: 'Third setup task for the third step for this machine',
 					status: { default: Status.Todo }
 				},
 				fourthSubTask: {
-					title: 'Fourth setup task step for the third task',
-					desc: 'Fourth setup task step for the third task for this machine',
+					title: 'Fourth setup task for the third step',
+					desc: 'Fourth setup task for the third step for this machine',
 					status: { default: Status.Todo }
 				}
 			}
 		},
 		fourthStep: {
-			title: 'Fourth setup task',
-			desc: 'Fourth setup task for this machine',
+			title: 'Fourth setup step',
+			desc: 'Fourth setup step for this machine',
 			status: { default: Status.Todo },
 			tasks: {
 				firstSubTask: {
-					title: 'First setup task step for the fourth task',
-					desc: 'First setup task step for the fourth task for this machine',
+					title: 'First setup task for the fourth step',
+					desc: 'First setup task for the fourth step for this machine',
 					status: { default: Status.Todo }
 				},
 				secondSubTask: {
-					title: 'Second setup task step for the fourth task',
-					desc: 'Second setup task step for the fourth task for this machine',
+					title: 'Second setup task for the fourth step',
+					desc: 'Second setup task for the fourth step for this machine',
 					status: { default: Status.Todo }
 				},
 				thirdSubTask: {
-					title: 'Third setup task step for the fourth task',
-					desc: 'Third setup task step for the fourth task for this machine',
+					title: 'Third setup task for the fourth step',
+					desc: 'Third setup task for the fourth step for this machine',
 					status: { default: Status.Todo }
 				}
 			}
 		},
 		fifthStep: {
-			title: 'Fifth setup task',
-			desc: 'Fifth setup task for this machine',
+			title: 'Fifth setup step',
+			desc: 'Fifth setup step for this machine',
 			status: { default: Status.Todo },
 			tasks: {
 				firstSubTask: {
-					title: 'First setup task step for the fifth task',
-					desc: 'First setup task step for the fifth task for this machine',
+					title: 'First setup task for the fifth step',
+					desc: 'First setup task for the fifth step for this machine',
 					status: { default: Status.Todo }
 				},
 				secondSubTask: {
-					title: 'Second setup task step for the fifth task',
-					desc: 'Second setup task step for the fifth task for this machine',
+					title: 'Second setup task for the fifth step',
+					desc: 'Second setup task for the fifth step for this machine',
 					status: { default: Status.Todo }
 				},
 				thirdSubTask: {
-					title: 'Third setup task step for the fifth task',
-					desc: 'Third setup task step for the fifth task for this machine',
+					title: 'Third setup task for the fifth step',
+					desc: 'Third setup task for the fifth step for this machine',
 					status: { default: Status.Todo }
 				},
 				fourthSubTask: {
-					title: 'Fourth setup task step for the fifth task',
-					desc: 'Fourth setup task step for the fifth task for this machine',
+					title: 'Fourth setup task for the fifth step',
+					desc: 'Fourth setup task for the fifth step for this machine',
 					status: { default: Status.Todo }
 				}
 			}
 		},
 		sixthStep: {
-			title: 'Sixth setup task',
-			desc: 'Sixth setup task for this machine',
+			title: 'Sixth setup step',
+			desc: 'Sixth setup step for this machine',
 			status: { default: Status.Todo },
 			tasks: {
 				firstSubTask: {
-					title: 'First setup task step for the sixth task',
-					desc: 'First setup task step for the sixth task for this machine',
+					title: 'First setup task for the sixth step',
+					desc: 'First setup task for the sixth step for this machine',
 					status: { default: Status.Todo }
 				},
 				secondSubTask: {
-					title: 'Second setup task step for the sixth task',
-					desc: 'Second setup task step for the sixth task for this machine',
+					title: 'Second setup task for the sixth step',
+					desc: 'Second setup task for the sixth step for this machine',
 					status: { default: Status.Todo }
 				},
 				thirdSubTask: {
-					title: 'Third setup task step for the sixth task',
-					desc: 'Third setup task step for the sixth task for this machine',
+					title: 'Third setup task for the sixth step',
+					desc: 'Third setup task for the sixth step for this machine',
 					status: { default: Status.Todo }
 				}
 			}
