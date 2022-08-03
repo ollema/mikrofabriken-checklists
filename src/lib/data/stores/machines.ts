@@ -36,6 +36,10 @@ function machinesStore() {
 		setStatus(Status.Todo, machineId, stepId, taskId);
 	}
 
+	function setSkipped(machineId: string, stepId: string, taskId?: string) {
+		setStatus(Status.Skipped, machineId, stepId, taskId);
+	}
+
 	function setDone(machineId: string, stepId: string, taskId?: string) {
 		setStatus(Status.Done, machineId, stepId, taskId);
 	}
@@ -56,6 +60,7 @@ function machinesStore() {
 	return {
 		subscribe: store.subscribe,
 		setTodo,
+		setSkipped,
 		setDone,
 		resetSetupStep,
 		resetSetup

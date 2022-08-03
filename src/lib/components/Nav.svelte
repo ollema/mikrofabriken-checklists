@@ -47,13 +47,17 @@
 		</div>
 
 		<div class="nav-block right-nav">
-			{#if machineId !== undefined}
-				<a href="/machines/{machineId}/setup" class:inactive={action !== 'setup'}>setup</a>
-				<a href="/machines/{machineId}/operate" class:inactive={action !== 'operate'}>operate</a>
-				<a href="/machines/{machineId}/cleanup" class:inactive={action !== 'cleanup'}>cleanup</a>
-			{:else}
-				<a href="/about" class:selected={section === 'about'}>about</a>
-			{/if}
+			<div>
+				{#if machineId !== undefined}
+					<a href="/machines/{machineId}/setup" class:inactive={action !== 'setup'}>setup</a>
+					/
+					<a href="/machines/{machineId}/operate" class:inactive={action !== 'operate'}>operate</a>
+					/
+					<a href="/machines/{machineId}/cleanup" class:inactive={action !== 'cleanup'}>cleanup</a>
+				{:else}
+					<a href="/about" class:selected={section === 'about'}>about</a>
+				{/if}
+			</div>
 		</div>
 
 		<div class="nav-block left-nav">
@@ -110,6 +114,7 @@
 
 		max-width: 70rem;
 		margin: 0 auto;
+		padding: 0 1rem;
 	}
 
 	.nav-block {
