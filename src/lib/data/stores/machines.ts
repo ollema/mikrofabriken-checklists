@@ -1,7 +1,7 @@
 import { writable, get } from 'svelte/store';
 import type { Writable } from 'svelte/store';
 
-import { Status, type MachinesType } from '$lib/data/types/machines';
+import type { MachinesType } from '$lib/data/types/machines';
 import { laser } from '$lib/data/machines/laser';
 
 // function constructKey(machineId: string, stepId: string, taskId?: string) {
@@ -19,36 +19,30 @@ function initializeStore(): MachinesType {
 function machinesStore() {
 	const store = <Writable<MachinesType>>writable(initializeStore());
 
-	function setStatus(status: Status, machineId: string, stepId: string, taskId?: string) {
+	function setDone(done: boolean, machineId: string, stepId: string, taskId?: string) {
 		// const key = constructKey(machineId, stepId, taskId);
 
 		if (taskId) {
-			store.update(
-				($store) => (($store[machineId].setupSteps[stepId].tasks[taskId].status = { default: status }), $store)
-			);
+			store.update(($store) => (($store[machineId].setupSteps[stepId].tasks[taskId].done = { default: done }), $store));
 		} else {
-			store.update(($store) => (($store[machineId].setupSteps[stepId].status = { default: status }), $store));
+			store.update(($store) => (($store[machineId].setupSteps[stepId].done = { default: done }), $store));
 		}
 		// fetch(`/api/set_state/id?state=${newState}`);
 	}
 
-	function setTodo(machineId: string, stepId: string, taskId?: string) {
-		setStatus(Status.Todo, machineId, stepId, taskId);
-	}
-
-	function setSkipped(machineId: string, stepId: string, taskId?: string) {
-		setStatus(Status.Skipped, machineId, stepId, taskId);
-	}
-
-	function setDone(machineId: string, stepId: string, taskId?: string) {
-		setStatus(Status.Done, machineId, stepId, taskId);
+	function toggleDone(machineId: string, stepId: string, taskId?: string) {
+		if (taskId) {
+			setDone(!get(store)[machineId].setupSteps[stepId].tasks[taskId].done.default, machineId, stepId, taskId);
+		} else {
+			setDone(!get(store)[machineId].setupSteps[stepId].done.default, machineId, stepId, taskId);
+		}
 	}
 
 	function resetSetupStep(machineId: string, stepId: string) {
 		Object.keys(get(store)[machineId].setupSteps[stepId].tasks).forEach((taskId) => {
-			setTodo(machineId, stepId, taskId);
+			setDone(false, machineId, stepId, taskId);
 		});
-		setTodo(machineId, stepId);
+		setDone(false, machineId, stepId);
 	}
 
 	function resetSetup(machineId: string) {
@@ -59,9 +53,8 @@ function machinesStore() {
 
 	return {
 		subscribe: store.subscribe,
-		setTodo,
-		setSkipped,
 		setDone,
+		toggleDone,
 		resetSetupStep,
 		resetSetup
 	};

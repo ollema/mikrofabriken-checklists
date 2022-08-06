@@ -13,7 +13,7 @@
 	$: nextStepId = Object.keys($machines[machineId].setupSteps)[currentStep + 1];
 
 	function setSetupStepDone() {
-		machines.setDone(machineId, stepId);
+		machines.setDone(true, machineId, stepId);
 	}
 </script>
 

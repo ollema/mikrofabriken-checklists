@@ -41,10 +41,6 @@
 			<slot name="body" />
 		</div>
 	{/if}
-
-	<div class="footer">
-		<slot name="footer" />
-	</div>
 </div>
 
 <style>
@@ -67,6 +63,8 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+
+		height: 3rem;
 
 		cursor: pointer;
 	}

@@ -6,126 +6,86 @@
 
 	import AccordionItem from '$lib/components/AccordionItem.svelte';
 	import { machines } from '$lib/data/stores/machines';
-	import { Status } from '$lib/data/types/machines';
 
 	export let machineId: string;
 	export let taskId: string;
 	export let stepId: string;
 
-	function setSetupTaskTodo() {
-		machines.setTodo(machineId, stepId, taskId);
+	function toggleDone() {
+		machines.toggleDone(machineId, stepId, taskId);
 	}
 
-	function setSetupTaskSkipped() {
-		machines.setSkipped(machineId, stepId, taskId);
-	}
-
-	function setSetupTaskDone() {
-		machines.setDone(machineId, stepId, taskId);
-	}
-
-	$: status = $machines[machineId].setupSteps[stepId].tasks[taskId].status.default;
+	$: done = $machines[machineId].setupSteps[stepId].tasks[taskId].done.default;
 
 	let active = false;
 
 	async function click() {
-		active = false;
-		await tick();
-		active = true;
+		if (done) {
+			active = false;
+			await tick();
+			active = true;
+		}
 	}
 </script>
 
-<AccordionItem key={taskId}>
-	<div slot="header-title">
-		{$machines[machineId].setupSteps[stepId].tasks[taskId].title.toLocaleLowerCase()}
-	</div>
-
-	<div slot="body">
-		{#if $machines[machineId].setupSteps[stepId].tasks[taskId].desc !== undefined}
-			{$machines[machineId].setupSteps[stepId].tasks[taskId].desc}
-		{:else}
-			no description available
+<div class="task">
+	<span on:click={click} class="relative">
+		<input type="checkbox" on:click={toggleDone} checked={done} />
+		{#if active}
+			<div class="confetti">
+				<Confetti />
+			</div>
 		{/if}
-	</div>
+	</span>
 
-	<div slot="footer">
-		<div class="footer">
-			<div class="footer-status">
-				{#key status}
-					<div in:fade>
-						{#if status === Status.Todo}
-							&#x2B1C;
-						{:else if status === Status.Skipped}
-							&#xE15E;
-						{:else if status === Status.Done}
-							&#xE15D;
-						{/if}
-					</div>
-				{/key}
+	<div class="task-content">
+		<AccordionItem key={taskId}>
+			<div slot="header-title">
+				{$machines[machineId].setupSteps[stepId].tasks[taskId].title.toLocaleLowerCase()}
 			</div>
 
-			<div class="footer-buttons">
-				<button on:click={setSetupTaskTodo} class:active={status === Status.Todo} type="button">todo</button>
-				<button on:click={setSetupTaskSkipped} class:active={status === Status.Skipped} type="button">skip</button>
-				<span on:click={click} class="relative">
-					<button on:click={setSetupTaskDone} class:active={status === Status.Done} class="done-button" type="button"
-						>done</button
-					>
-					{#if active}
-						<div class="confetti">
-							<Confetti />
-						</div>
-					{/if}
-				</span>
+			<div slot="body">
+				{#if $machines[machineId].setupSteps[stepId].tasks[taskId].desc !== undefined}
+					{$machines[machineId].setupSteps[stepId].tasks[taskId].desc}
+				{:else}
+					no description available
+				{/if}
 			</div>
-		</div>
+		</AccordionItem>
 	</div>
-</AccordionItem>
+</div>
 
 <style>
-	.footer {
+	.task {
 		display: flex;
-		align-items: center;
-		justify-content: space-between;
+		align-items: start;
 	}
 
-	.footer-status {
-		display: flex;
-		align-items: center;
+	input[type='checkbox'] {
+		width: 2.5rem;
+		height: 2.5rem;
+		margin-top: 0.3rem;
+		margin-right: 0.75rem;
+
+		background-color: var(--slate-100);
+		border: 2px solid var(--slate-500);
+		border-radius: 0.25rem;
+		cursor: pointer;
 	}
 
-	.footer-buttons {
-		display: flex;
-		align-items: center;
-	}
-
-	button {
-		display: flex;
-		align-items: center;
-
-		padding: 0.5rem 0.75rem;
-		margin: 0rem 0.25rem;
-
-		color: var(--slate-500);
-		background-color: var(--slate-300);
-		border: 2px solid;
-		border-color: var(--slate-300);
-		border-radius: 0.5rem;
-	}
-
-	button:hover {
-		color: var(--slate-800);
-		background-color: var(--slate-400);
-	}
-
-	.active {
-		color: var(--slate-800);
-		border-color: var(--slate-500);
-		font-weight: 600;
-	}
-
-	.done-button {
-		margin-right: 0;
+	input[type='checkbox']:checked:after {
+		content: '';
+		display: block;
+		width: 1rem;
+		height: 2rem;
+		border: solid green;
+		border-width: 0 6px 6px 0;
+		-webkit-transform: rotate(45deg);
+		-ms-transform: rotate(45deg);
+		transform: rotate(45deg);
+		position: relative;
+		top: 0px;
+		left: 0.6rem;
 	}
 
 	.relative {
@@ -140,5 +100,9 @@
 
 	.confetti {
 		pointer-events: none;
+	}
+
+	.task-content {
+		flex-grow: 1;
 	}
 </style>

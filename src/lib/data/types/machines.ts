@@ -1,19 +1,13 @@
-export enum Status {
-	Todo = 'TODO',
-	Skipped = 'SKIPPED',
-	Done = 'DONE'
-}
-
 type TaskType = {
 	title: string;
 	desc?: string;
-	status: { [user: string]: Status };
+	done: { [user: string]: boolean };
 };
 
 type StepType = {
 	title: string;
 	desc?: string;
-	status: { [user: string]: Status };
+	done: { [user: string]: boolean };
 
 	tasks: { [taskId: string]: TaskType };
 };
