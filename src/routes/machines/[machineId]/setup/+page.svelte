@@ -3,7 +3,7 @@
 
 	import { machines } from '$lib/data/stores/machines';
 
-	import SetupStep from './_SetupStep.svelte';
+	import SetupStep from './SetupStep.svelte';
 
 	$: machineId = $page.params.machineId;
 </script>

@@ -3,7 +3,7 @@
 
 	import { machines } from '$lib/data/stores/machines';
 
-	import Button from './_Button.svelte';
+	import MachineButton from './MachineButton.svelte';
 
 	$: machineId = $page.params.machineId;
 </script>
@@ -14,13 +14,13 @@
 
 <div class="buttons">
 	<div>
-		<Button {machineId} action="setup" />
+		<MachineButton {machineId} action="setup" />
 	</div>
 	<div>
-		<Button {machineId} action="operation" />
+		<MachineButton {machineId} action="operation" />
 	</div>
 	<div>
-		<Button {machineId} action="cleanup" />
+		<MachineButton {machineId} action="cleanup" />
 	</div>
 </div>
 
